@@ -1,3 +1,30 @@
 {
-  "extends": "loopback"
+  "extends": "airbnb",
+  "rules": {
+    "no-console": 0,
+    "strict": [2, "global"],
+    "no-param-reassign": [2, {"props": false}],
+    "comma-dangle": [2, "never"],
+    "no-mixed-operators": 0,
+    "no-tabs": 0,
+    "import/no-extraneous-dependencies": 0,
+    "import/no-dynamic-require": 0,
+    "no-prototype-builtins": 0,
+    "no-plusplus": 0,
+    "no-continue": 0,
+    "no-restricted-syntax": 0,
+    "class-methods-use-this": 0,
+    "import/no-unresolved": 0,
+    "no-underscore-dangle": [0]
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "script"
+  },
+  "globals": {
+    "logger": true
+  },
+  "env": {
+    "node": true
+  }
 }
