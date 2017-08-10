@@ -13,7 +13,7 @@
                 <div>
                     <ul>
                         <li>
-                            <b><a ng-click="$ctrl.openFolder(catalogItem.id, catalogItem.name)">
+                            <b><a ng-click="$ctrl.openFolder(catalogItem.id)">
                                 {{catalogItem.name}}
                             </a></b>
                         </li>
@@ -22,7 +22,7 @@
                 <span flex></span>
                 <div ng-switch on="$ctrl.isAdmin">
                     <a ng-switch-when="true">
-                        <button ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</button>
+                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</md-button>
                     </a>
                 </div>
             </div>
@@ -37,10 +37,10 @@
                 <span flex></span>
                 <div>
                     <a ng-switch-when="true" ui-sref="editor({ id: catalogItem.id, path: catalogItem.path })">
-                        <button>Edit</button>
+                        <md-button class="md-raised md-primary">Edit</md-button>
                     </a>
                     <a ng-switch-when="true">
-                        <button ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</button>
+                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</md-button>
                     </a>
                 </div>
             </div>

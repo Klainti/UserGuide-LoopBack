@@ -8,7 +8,7 @@
 </div>
 
 <div ng-if="$ctrl.editing">
-    <textarea ng-model="$ctrl.markdown" rows="20" cols="110" wrap='soft'></textarea>
+    <textarea id="markdownEditor" ng-model="$ctrl.markdown" rows="20" cols="110" wrap='soft'></textarea>
 </div>
 <div ng-if="!$ctrl.editing">
     <span ng-bind-html="$ctrl.previewHtml"></span>

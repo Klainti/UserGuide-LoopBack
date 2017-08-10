@@ -45,11 +45,10 @@ class CatalogController {
       this.catalogList = undefined;
     });
   }
-  openFolder(id, name) {
+  openFolder(id) {
     this.Show.get({ id }, (res) => {
       this.catalogList = res.list;
       this.catalogPath = res.list[0].path;
-      console.log(name);
     }, (error) => {
       console.log(error.message);
     });

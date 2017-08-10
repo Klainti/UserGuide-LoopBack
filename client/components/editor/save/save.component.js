@@ -25,9 +25,6 @@ class SaveMarkdownController {
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
-      console.log('ID = ' + this.$stateParams.id);
-      console.log('PREV PATH = ' + this.$stateParams.path);
-      console.log('INPUT PATH = ' + res.path);
       if (this.$stateParams.id === '0') {
         this.onSave({ id: this.$stateParams.id, path: res.path });
       } else if (this.$stateParams.path === res.path) {

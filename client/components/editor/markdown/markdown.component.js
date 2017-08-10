@@ -1,7 +1,8 @@
 'use strict';
 
 class MarkdownController {
-  constructor() {
+  constructor(Resources) {
+    this.Link = Resources.getConvertLinkUrl();
     this.editing = true;
   }
   editBtn() {
@@ -15,7 +16,20 @@ class MarkdownController {
     this.onUpload({ picURL, picName });
   }
   addLink(linkText, linkUrl) {
-    this.onLink({ linkText, linkUrl });
+    this.Link.get({ linkText, linkUrl }, (res) => {
+      console.log(res.link);
+      this.markdown = this.addLinkToEditor(res.link, this.markdown);
+    }, (error) => {
+      console.log(error.message);
+    });
+  }
+  addLinkToEditor(link, markdown) {
+    const element = angular.element(document.querySelector('#markdownEditor'))[0];
+    const startPos = element.selectionStart;
+    const endPos = element.selectionEnd;
+    // const scrollTop = element.scrollTop;
+    return markdown.substring(0, startPos) + link +
+        markdown.substring(endPos, markdown.length);
   }
 }
 
@@ -27,7 +41,6 @@ angular.module('UserGuideApp')
         markdown: '=',
         onPreview: '&',
         onUpload: '&',
-        onLink: '&',
         previewHtml: '<'
       }
     });

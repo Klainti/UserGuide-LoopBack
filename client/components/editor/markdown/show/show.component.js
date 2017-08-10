@@ -1,5 +1,5 @@
 'use strict';
-
+// TODO change show name, popUp view
 class ShowPopUpController {
   constructor($mdDialog, $state, Resources) {
     this.$mdDialog = $mdDialog;

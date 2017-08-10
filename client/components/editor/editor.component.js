@@ -4,7 +4,6 @@ class EditorController {
   constructor(Resources) {
     this.Pictures = Resources.getPictureUrl();
     this.Markdown = Resources.getMarkdownUrl();
-    this.Link = Resources.getConvertLinkUrl();
   }
   $onInit() {
     this.markdown = this.markdownData;
@@ -17,14 +16,6 @@ class EditorController {
         console.log(error.message);
       });
     }
-  }
-  link(linkText, linkUrl) {
-    this.Link.get({ linkText, linkUrl }, (res) => {
-      console.log(res.link);
-      this.markdown = this.markdown.concat(res.link);
-    }, (error) => {
-      console.log(error.message);
-    });
   }
   preview() {
     if (this.markdown !== '') {
@@ -40,19 +31,19 @@ class EditorController {
   save(id, path) {
     if (id === '0') {
       this.Markdown.save({ command: 'save', path, markdown: this.markdown }, (data) => {
-        this.onEditorSave({ list: data.list, path, newFileID: data.newFileID });
+        this.onEditorSave({ command: 'save', list: data.list, path, newFileID: data.newFileID });
       }, (error) => {
         console.log(error.message);
       });
     } else if (path === '') {
       this.Markdown.update({ id, markdown: this.markdown }, () => {
-        this.onEditorSave({ list: null, path: null, newFileID: id });
+        this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
       }, (error) => {
         console.log(error.message);
       });
     } else {
       this.Markdown.save({ command: 'move', id, path, markdown: this.markdown }, (data) => {
-        this.onEditorSave({ list: data.list, path, newFileID: data.newFileID });
+        this.onEditorSave({ command: 'move', list: data.list, path, newFileID: data.newFileID });
       }, (error) => {
         console.log(error.message);
       });
