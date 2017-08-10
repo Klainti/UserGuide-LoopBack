@@ -1,0 +1,51 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS (load bootstrap) -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/border.line.css">
+    <!-- JS -->
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/node_modules/angular-resource/angular-resource.js"></script>
+
+    <script src="app.js"></script>
+    <script src="services/resources.service.js"></script>
+
+    <script src="components/app.component.js"></script>
+    <script src="components/page/guide/guide.component.js"></script>
+    <script src="components/page/catalog/catalog.component.js"></script>
+
+    <script src="components/editor/editor.component.js"></script>
+    <script src="components/editor/markdown/markdown.component.js"></script>
+    <script src="components/editor/markdown/link/link.component.js"></script>
+    <script src="components/editor/markdown/upload/upload.component.js"></script>
+    <script src="components/editor/markdown/show/show.component.js"></script>
+    <script src="components/editor/save/save.component.js"></script>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="/node_modules/angular-animate/angular-animate.js"></script>
+    <script src="/node_modules/angular-aria/angular-aria.js"></script>
+    <script src="/node_modules/angular-messages/angular-messages.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="/node_modules/angular-material/angular-material.js"></script>
+
+    <script src="https://unpkg.com/@uirouter/angularjs@1.0.5/release/angular-ui-router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.3.0/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-showdown/1.1.0/ng-showdown.min.js"></script>
+
+</head>
+
+<body ng-app="UserGuideApp" ng-cloak>
+
+    <app-component is-admin="true"></app-component>
+
+</body>
+</html>

@@ -41,9 +41,16 @@
     }
   },
   "files": {
-    "loopback#static": {
+    "loopback#static": [{
+      "name": "client",
+      "paths": ["/"],
       "params": "$!../client"
-    }
+    },
+      {
+        "name": "node_modules",
+        "paths": ["/node_modules"],
+        "params": "$!../node_modules"
+      }]
   },
   "final": {
     "loopback#urlNotFound": {}

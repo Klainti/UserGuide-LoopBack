@@ -1,0 +1,52 @@
+<md-content>
+    <md-list class="md-dense" flex>
+        <div ng-switch on="$ctrl.isAdmin">
+            <ul ng-switch-when="true">
+                <md-input-container>
+                    <label>Path</label>
+                    <input ng-model="$ctrl.catalogPath">
+                </md-input-container>
+            </ul>
+        </div>
+        <md-list-item ng-repeat="catalogItem in $ctrl.catalogList">
+            <div layout="row" ng-if="catalogItem.type === 'folder'" flex>
+                <div>
+                    <ul>
+                        <li>
+                            <b><a ng-click="$ctrl.openFolder(catalogItem.id, catalogItem.name)">
+                                {{catalogItem.name}}
+                            </a></b>
+                        </li>
+                    </ul>
+                </div>
+                <span flex></span>
+                <div ng-switch on="$ctrl.isAdmin">
+                    <a ng-switch-when="true">
+                        <button ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</button>
+                    </a>
+                </div>
+            </div>
+            <div layout="row" ng-if="catalogItem.type === 'md'" ng-switch on="$ctrl.isAdmin" flex>
+                <div>
+                    <ul>
+                        <a ng-style="$ctrl.setItemColor(catalogItem.id)" ui-sref="guide({ id: catalogItem.id })">
+                            {{catalogItem.name}}
+                        </a>
+                    </ul>
+                </div>
+                <span flex></span>
+                <div>
+                    <a ng-switch-when="true" ui-sref="editor({ id: catalogItem.id, path: catalogItem.path })">
+                        <button>Edit</button>
+                    </a>
+                    <a ng-switch-when="true">
+                        <button ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </md-list-item>
+        <ul>
+            <md-button ng-click="$ctrl.goBackBtn()" class="md-raised">Back</md-button>
+        </ul>
+    </md-list>
+</md-content>

@@ -1,0 +1,15 @@
+
+<div>
+    <md-button ng-click="$ctrl.editBtn()" class="md-raised md-primary">Edit</md-button>
+    <md-button ng-click="$ctrl.previewBtn()" class="md-raised md-primary">Preview</md-button>
+    <add-link on-add-link="$ctrl.addLink(linkText, linkUrl)"></add-link>
+    <upload-picture on-markdown-upload="$ctrl.upload(picURL, picName)"></upload-picture>
+    <show-pictures></show-pictures>
+</div>
+
+<div ng-if="$ctrl.editing">
+    <textarea ng-model="$ctrl.markdown" rows="20" cols="110" wrap='soft'></textarea>
+</div>
+<div ng-if="!$ctrl.editing">
+    <span ng-bind-html="$ctrl.previewHtml"></span>
+</div>
