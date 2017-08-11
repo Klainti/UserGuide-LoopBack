@@ -2368,6 +2368,877 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
         return R;
       }]);
 
+/**
+ * @ngdoc object
+ * @name lbServices.Markdown
+ * @header lbServices.Markdown
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Markdown` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+  module.factory(
+    "Markdown",
+    [
+      'LoopBackResource', 'LoopBackAuth', '$injector', '$q',
+      function(LoopBackResource, LoopBackAuth, $injector, $q) {
+        var R = LoopBackResource(
+        urlBase + "/Markdowns/:id",
+          { 'id': '@id' },
+          {
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#create
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Create a new instance of the model and persist it into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *   This method does not accept any parameters.
+             *   Supply an empty object or omit this argument altogether.
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "create": {
+              url: urlBase + "/Markdowns",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#createMany
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Create a new instance of the model and persist it into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *   This method does not accept any parameters.
+             *   Supply an empty object or omit this argument altogether.
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Array.<Object>,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Array.<Object>} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "createMany": {
+              isArray: true,
+              url: urlBase + "/Markdowns",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#patchOrCreate
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Patch an existing model instance or insert a new one into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "patchOrCreate": {
+              url: urlBase + "/Markdowns",
+              method: "PATCH",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#replaceOrCreate
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Replace an existing model instance or insert a new one into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *   This method does not accept any parameters.
+             *   Supply an empty object or omit this argument altogether.
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "replaceOrCreate": {
+              url: urlBase + "/Markdowns/replaceOrCreate",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#upsertWithWhere
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Update an existing model instance or insert a new one into the data source based on the where criteria.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `where` – `{object=}` - Criteria to match model instances
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "upsertWithWhere": {
+              url: urlBase + "/Markdowns/upsertWithWhere",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#exists
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Check whether a model instance exists in the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `exists` – `{boolean=}` -
+             */
+            "exists": {
+              url: urlBase + "/Markdowns/:id/exists",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#findById
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Find a model instance by {{id}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             *  - `filter` – `{object=}` - Filter defining fields and include - must be a JSON-encoded string ({"something":"value"})
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "findById": {
+              url: urlBase + "/Markdowns/:id",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#replaceById
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Replace attributes for a model instance and persist it into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "replaceById": {
+              url: urlBase + "/Markdowns/:id/replace",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#find
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Find all instances of the model matched by filter from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({"something":"value"})
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Array.<Object>,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Array.<Object>} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "find": {
+              isArray: true,
+              url: urlBase + "/Markdowns",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#findOne
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Find first instance of the model matched by filter from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit - must be a JSON-encoded string ({"something":"value"})
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "findOne": {
+              url: urlBase + "/Markdowns/findOne",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#updateAll
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Update instances of the model matched by {{where}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `where` – `{object=}` - Criteria to match model instances
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Information related to the outcome of the operation
+             */
+            "updateAll": {
+              url: urlBase + "/Markdowns/update",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#deleteById
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Delete a model instance by {{id}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "deleteById": {
+              url: urlBase + "/Markdowns/:id",
+              method: "DELETE",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#count
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Count instances of the model matched by where from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `where` – `{object=}` - Criteria to match model instances
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `count` – `{number=}` -
+             */
+            "count": {
+              url: urlBase + "/Markdowns/count",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#prototype$patchAttributes
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Patch attributes for a model instance and persist it into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Markdown id
+             *
+             *  - `options` – `{object=}` -
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+            "prototype$patchAttributes": {
+              url: urlBase + "/Markdowns/:id",
+              method: "PATCH",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#createChangeStream
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Create a change stream.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *   This method does not accept any parameters.
+             *   Supply an empty object or omit this argument altogether.
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `changes` – `{ReadableStream=}` -
+             */
+            "createChangeStream": {
+              url: urlBase + "/Markdowns/change-stream",
+              method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#preview
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * <em>
+             * (The remote method definition does not provide any description.)
+             * </em>
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `data` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `html` – `{string=}` -
+             */
+            "preview": {
+              url: urlBase + "/Markdowns/preview",
+              method: "GET",
+            },
+          }
+        );
+
+
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#upsert
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Patch an existing model instance or insert a new one into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["upsert"] = R["patchOrCreate"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#updateOrCreate
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Patch an existing model instance or insert a new one into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `data` – `{object=}` - Model instance data
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["updateOrCreate"] = R["patchOrCreate"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#patchOrCreateWithWhere
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Update an existing model instance or insert a new one into the data source based on the where criteria.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `where` – `{object=}` - Criteria to match model instances
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["patchOrCreateWithWhere"] = R["upsertWithWhere"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#update
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Update instances of the model matched by {{where}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `where` – `{object=}` - Criteria to match model instances
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Information related to the outcome of the operation
+             */
+        R["update"] = R["updateAll"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#destroyById
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Delete a model instance by {{id}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["destroyById"] = R["deleteById"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#removeById
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Delete a model instance by {{id}} from the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Model id
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["removeById"] = R["deleteById"];
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#prototype$updateAttributes
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Patch attributes for a model instance and persist it into the data source.
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{*}` - Markdown id
+             *
+             *  - `options` – `{object=}` -
+             *
+             *  - `data` – `{object=}` - An object of model property name/value pairs
+             *
+             *  - `options` – `{object=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * <em>
+             * (The remote method definition does not provide any description.
+             * This usually means the response is a `Markdown` object.)
+             * </em>
+             */
+        R["prototype$updateAttributes"] = R["prototype$patchAttributes"];
+
+
+        /**
+        * @ngdoc property
+        * @name lbServices.Markdown#modelName
+        * @propertyOf lbServices.Markdown
+        * @description
+        * The name of the model represented by this $resource,
+        * i.e. `Markdown`.
+        */
+        R.modelName = "Markdown";
+
+
+
+        return R;
+      }]);
+
 
   module
   .factory('LoopBackAuth', function() {
