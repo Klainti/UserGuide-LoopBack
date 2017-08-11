@@ -26,12 +26,12 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
           name: null
         },
         resolve: {
-          markdownData: ($stateParams, Resources) => {
+          markdownData: ($stateParams, Markdown) => {
             if ($stateParams.id === '0') {
               return '';
             }
-            return Resources.getMarkdownUrl().get({ id: $stateParams.id, command: 'edit' })
-                .$promise.then(res => res.markdown);
+            return Markdown.findById({ id: $stateParams.id })
+                .$promise.then(res => res.data);
           }
         }
       });
