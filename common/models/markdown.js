@@ -25,7 +25,7 @@ module.exports = (Markdown) => {
 
   /* Create folders */
   Markdown.beforeRemote('upsertWithWhere', (ctx, modelInstance, next) => {
-    if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/'){
+    if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
       next('Invalid Path');
     } else {
       if (ctx.req.body.path !== '/') {
@@ -60,5 +60,5 @@ module.exports = (Markdown) => {
       .catch((error) => {
         next(error);
       });
-  })
+  });
 };
