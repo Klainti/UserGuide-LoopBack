@@ -38,5 +38,9 @@
   "Picture": {
     "dataSource": "mongoDB",
     "public": true
+  },
+  "Markdown": {
+    "dataSource": "mongoDB",
+    "public": true
   }
 }
