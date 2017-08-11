@@ -15,6 +15,17 @@ class MarkdownController {
   upload(picURL, picName) {
     this.onUpload({ picURL, picName });
   }
+  insertPicture(id) {
+    this.markdown = this.insertPictureToEditor(id, this.markdown);
+  }
+  insertPictureToEditor(id, markdown) {
+    const pictureLink = `![](/api/Pictures/${id})`;
+    const element = angular.element(document.querySelector('#markdownEditor'))[0];
+    const startPos = element.selectionStart;
+    const endPos = element.selectionEnd;
+    return markdown.substring(0, startPos) + pictureLink +
+      markdown.substring(endPos, markdown.length);
+  }
   addLink(linkText, linkUrl) {
     this.Link.get({ linkText, linkUrl }, (res) => {
       console.log(res.link);
@@ -27,7 +38,6 @@ class MarkdownController {
     const element = angular.element(document.querySelector('#markdownEditor'))[0];
     const startPos = element.selectionStart;
     const endPos = element.selectionEnd;
-    // const scrollTop = element.scrollTop;
     return markdown.substring(0, startPos) + link +
         markdown.substring(endPos, markdown.length);
   }

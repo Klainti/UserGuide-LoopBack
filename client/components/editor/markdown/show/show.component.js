@@ -1,22 +1,25 @@
 'use strict';
 // TODO change show name, popUp view
 class ShowPopUpController {
-  constructor($mdDialog, $state, Resources) {
+  constructor($mdDialog, $state, Picture) {
     this.$mdDialog = $mdDialog;
-    this.Pictures = Resources.getPictureUrl();
+    this.Picture = Picture;
     this.$onInit();
   }
   $onInit() {
-    this.Pictures.get({ command: 'show' }, (res) => {
-      this.pictures = res.imageNames;
+    this.Picture.find((res) => {
+      this.pictures = res;
     }, (error) => {
       console.log(error.message);
     });
   }
-  deleteBtn(path) {
-    const index = this.pictures.indexOf(path);
+  deleteBtn(picture) {
+    const index = this.pictures.indexOf(picture);
     this.pictures.splice(index, 1);
-    this.Pictures.delete({ path });
+    this.Picture.deleteById({ id: picture.id });
+  }
+  insertBtn(id) {
+    this.$mdDialog.hide({ id });
   }
 }
 
@@ -31,7 +34,7 @@ class ShowPicturesController {
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
-      console.log(res);
+      this.onInsertPicture({ id: res.id });
     }, () => {
       console.log('Canceled showPictures');
     });
@@ -41,6 +44,9 @@ class ShowPicturesController {
 angular.module('UserGuideApp')
     .component('showPictures', {
       controller: ShowPicturesController,
-      templateUrl: 'components/editor/markdown/show/show.view.html'
+      templateUrl: 'components/editor/markdown/show/show.view.html',
+      bindings: {
+        onInsertPicture: '&'
+      }
     });
 

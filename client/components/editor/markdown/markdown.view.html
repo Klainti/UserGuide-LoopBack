@@ -4,7 +4,7 @@
     <md-button ng-click="$ctrl.previewBtn()" class="md-raised md-primary">Preview</md-button>
     <add-link on-add-link="$ctrl.addLink(linkText, linkUrl)"></add-link>
     <upload-picture on-markdown-upload="$ctrl.upload(picURL, picName)"></upload-picture>
-    <show-pictures></show-pictures>
+    <show-pictures on-insert-picture="$ctrl.insertPicture(id)"></show-pictures>
 </div>
 
 <div ng-if="$ctrl.editing">
