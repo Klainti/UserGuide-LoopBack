@@ -1,26 +1,17 @@
 'use strict';
 
 class EditorController {
-  constructor(Resources) {
+  constructor(Resources, Markdown) {
     this.Pictures = Resources.getPictureUrl();
-    this.Markdown = Resources.getMarkdownUrl();
+    this.Markdown = Markdown;
   }
   $onInit() {
     this.markdown = this.markdownData;
   }
-  upload(picURL, picName) {
-    if (picURL !== undefined && picName !== undefined) {
-      this.Pictures.save({ imageUrl: picURL, imageName: picName }, (res) => {
-        console.log(res.message);
-      }, (error) => {
-        console.log(error.message);
-      });
-    }
-  }
   preview() {
     if (this.markdown !== '') {
-      this.Markdown.save({ command: 'preview', markdown: this.markdown }, (data) => {
-        this.previewHtml = data.convertedHtml;
+      this.Markdown.preview({ data: this.markdown }, (res) => {
+        this.previewHtml = res.html;
       }, (error) => {
         console.log(error.message);
       });
