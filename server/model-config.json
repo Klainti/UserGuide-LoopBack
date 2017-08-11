@@ -42,5 +42,9 @@
   "Markdown": {
     "dataSource": "mongoDB",
     "public": true
+  },
+  "Folder": {
+    "dataSource": "mongoDB",
+    "public": true
   }
 }
