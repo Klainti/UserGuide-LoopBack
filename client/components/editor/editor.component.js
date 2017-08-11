@@ -20,16 +20,14 @@ class EditorController {
   }
   save(id, name, path) {
     if (id === '0') {
-      console.log(name);
-      console.log(path);
       this.Markdown.upsertWithWhere({ where: { name, path } }, { name, path, data: this.markdown }, (res) => {
         console.log(res);
-        // this.onEditorSave({ command: 'save', list: data.list, path, newFileID: data.newFileID });
+        this.onEditorSave({ command: 'save', list: res.list, newFileID: res.newFile, path: res.path });
       }, (error) => {
         console.log(error.message);
       });
-    } else if (path === '') {
-      this.Markdown.update({ id, markdown: this.markdown }, () => {
+    } else if (name === '' && path === '') {
+      this.Markdown.prototype$patchAttributes({ id, markdown: this.markdown }, () => {
         this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
       }, (error) => {
         console.log(error.message);
