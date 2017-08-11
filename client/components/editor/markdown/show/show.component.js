@@ -1,13 +1,14 @@
 'use strict';
 // TODO change show name, popUp view
 class ShowPopUpController {
-  constructor($mdDialog, $state, Picture) {
+  constructor($mdDialog, Picture) {
     this.$mdDialog = $mdDialog;
     this.Picture = Picture;
     this.$onInit();
   }
   $onInit() {
-    this.Picture.find((res) => {
+    this.Picture.find({ filter: { fields: {'name': true, 'id': true } } }, (res) => {
+      console.log(res);
       this.pictures = res;
     }, (error) => {
       console.log(error.message);
