@@ -1,10 +1,10 @@
 'use strict';
 
 class AppController {
-  updateCatalog(command, list, path, newFileID) {
+  updateCatalog(command, list, newFileID, path) {
     if (command === 'save' || command === 'move') {
       this.catalog = list;
-      this.path = path.slice(0, path.lastIndexOf('/'));
+      this.path = path;
       this.newItem = newFileID;
       this.command = 'save';
     } else if (command === 'update') {
