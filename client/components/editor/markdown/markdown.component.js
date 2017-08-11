@@ -12,13 +12,18 @@ class MarkdownController {
     this.editing = false;
     this.onPreview();
   }
-  upload(picURL, picName) {
-    this.onUpload({ picURL, picName });
-  }
   insertPicture(id) {
-    this.markdown = this.insertPictureToEditor(id, this.markdown);
+    this.markdown = MarkdownController.insertPictureToEditor(id, this.markdown);
   }
-  insertPictureToEditor(id, markdown) {
+  addLink(linkText, linkUrl) {
+    this.Link.get({ linkText, linkUrl }, (res) => {
+      console.log(res.link);
+      this.markdown = MarkdownController.addLinkToEditor(res.link, this.markdown);
+    }, (error) => {
+      console.log(error.message);
+    });
+  }
+  static insertPictureToEditor(id, markdown) {
     const pictureLink = `![](/api/Pictures/${id})`;
     const element = angular.element(document.querySelector('#markdownEditor'))[0];
     const startPos = element.selectionStart;
@@ -26,15 +31,7 @@ class MarkdownController {
     return markdown.substring(0, startPos) + pictureLink +
       markdown.substring(endPos, markdown.length);
   }
-  addLink(linkText, linkUrl) {
-    this.Link.get({ linkText, linkUrl }, (res) => {
-      console.log(res.link);
-      this.markdown = this.addLinkToEditor(res.link, this.markdown);
-    }, (error) => {
-      console.log(error.message);
-    });
-  }
-  addLinkToEditor(link, markdown) {
+  static addLinkToEditor(link, markdown) {
     const element = angular.element(document.querySelector('#markdownEditor'))[0];
     const startPos = element.selectionStart;
     const endPos = element.selectionEnd;
@@ -50,7 +47,6 @@ angular.module('UserGuideApp')
       bindings: {
         markdown: '=',
         onPreview: '&',
-        onUpload: '&',
         previewHtml: '<'
       }
     });
