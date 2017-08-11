@@ -29,7 +29,7 @@ class SaveMarkdownController {
       if (this.$stateParams.id === '0') {
         this.onSave({ id: this.$stateParams.id, name: res.name, path: res.path });
       } else if (this.$stateParams.path === res.path) {
-        this.onSave({ id: this.$stateParams.id, path: '' });
+        this.onSave({ id: this.$stateParams.id, name: '', path: '' });
       } else {
         this.onSave({ id: this.$stateParams.id, path: res.path });
       }

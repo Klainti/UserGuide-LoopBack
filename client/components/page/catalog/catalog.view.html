@@ -36,7 +36,7 @@
                 </div>
                 <span flex></span>
                 <div>
-                    <a ng-switch-when="true" ui-sref="editor({ id: catalogItem.id, path: catalogItem.path })">
+                    <a ng-switch-when="true" ui-sref="editor({ id: catalogItem.id, name: catalogItem.name, path: $ctrl.catalogPath })">
                         <md-button class="md-raised md-primary">Edit</md-button>
                     </a>
                     <a ng-switch-when="true">
