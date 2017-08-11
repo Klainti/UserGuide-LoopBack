@@ -14,8 +14,8 @@ class UploadPopUpController {
 
 class UploadController {
   constructor($mdDialog, Picture) {
-    this.Picture = Picture;
     this.$mdDialog = $mdDialog;
+    this.Picture = Picture;
   }
   uploadBtn() {
     this.$mdDialog.show({
