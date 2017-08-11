@@ -25,7 +25,7 @@ module.exports = (Markdown) => {
 
   /* Create folders */
   Markdown.beforeRemote('upsertWithWhere', (ctx, modelInstance, next) => {
-    if (!PathValidation.test(ctx.req.body.path)){
+    if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
       next('Invalid Path');
     } else {
       if (ctx.req.body.path !== '/') {
@@ -41,12 +41,24 @@ module.exports = (Markdown) => {
           Folders.push({ name, path });
           LenOfPath--;
         }
-        Markdown.app.FS.SaveFolder(Folders)
+        Markdown.app.FS.saveFolder(Folders)
           .catch((error) => {
             next(error);
           });
       }
       next();
     }
+  });
+
+  Markdown.afterRemote('upsertWithWhere', (ctx, modelInstance, next) => {
+    Markdown.app.FS.getTreeByPath(modelInstance.path)
+      .then((siblings) => {
+        const list = Markdown.app.catalog.CreateList(siblings);
+        ctx.result = { list, newFile: modelInstance.id, path: modelInstance.path };
+        next();
+      })
+      .catch((error) => {
+        next(error);
+      });
   });
 };
