@@ -1,19 +1,35 @@
 <div layout="column" layout-align="center center"
      style="background-color: #f2f2f2" class="md-padding">
     <h3>
-        Save Markdown
+      Save Markdown
     </h3>
     <md-input-container flex>
-        <form name="myForm">
-            <label>Path</label>
-            <input ng-model="ctrl.path" name="myPath" required />
-            <div ng-messages="myForm.myPath.$error" role="alert">
-                <div ng-message="required">Please enter path</div>
-            </div>
-        </form>
+      <form name="pathForm">
+
+        <label>Path</label>
+        <input ng-model="ctrl.path" name="myPath" required />
+
+        <div ng-messages="pathForm.myPath.$error" role="alert">
+          <div ng-message="required">Please enter path</div>
+        </div>
+
+      </form>
     </md-input-container>
 
-    <md-button class="md-primary" ng-click="ctrl.ok(myForm.myPath.$error)" >
-        OK
+  <md-input-container flex>
+    <form name="nameForm">
+
+      <label>Name</label>
+      <input ng-model="ctrl.name" name="myName" required />
+
+      <div ng-messages="nameForm.myName.$error" role="alert">
+        <div ng-message="required">Please enter name</div>
+      </div>
+
+    </form>
+  </md-input-container>
+
+    <md-button class="md-primary" ng-click="ctrl.ok(pathForm.myPath.$error, nameForm.myName.$error)" >
+      OK
     </md-button>
 </div>

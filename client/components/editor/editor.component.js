@@ -1,8 +1,7 @@
 'use strict';
 
 class EditorController {
-  constructor(Resources, Markdown) {
-    this.Pictures = Resources.getPictureUrl();
+  constructor(Markdown) {
     this.Markdown = Markdown;
   }
   $onInit() {
@@ -19,10 +18,13 @@ class EditorController {
       this.previewHtml = '';
     }
   }
-  save(id, path) {
+  save(id, name, path) {
     if (id === '0') {
-      this.Markdown.save({ command: 'save', path, markdown: this.markdown }, (data) => {
-        this.onEditorSave({ command: 'save', list: data.list, path, newFileID: data.newFileID });
+      console.log(name);
+      console.log(path);
+      this.Markdown.upsertWithWhere({ where: { name, path } }, { name, path, data: this.markdown }, (res) => {
+        console.log(res);
+        // this.onEditorSave({ command: 'save', list: data.list, path, newFileID: data.newFileID });
       }, (error) => {
         console.log(error.message);
       });
