@@ -13,7 +13,8 @@ class UploadPopUpController {
 }
 
 class UploadController {
-  constructor($mdDialog) {
+  constructor($mdDialog, Picture) {
+    this.Picture = Picture;
     this.$mdDialog = $mdDialog;
   }
   uploadBtn() {
@@ -22,7 +23,13 @@ class UploadController {
       controller: UploadPopUpController,
       controllerAs: 'ctrl'
     }).then((res) => {
-      this.onMarkdownUpload({ picURL: res.picURL, picName: res.picName });
+      console.log(res.picURL);
+      this.Picture.create({ name: res.picName, url: res.picURL }, (res) => {
+        console.log(res.message);
+      }, (error) => {
+        console.log(error.message);
+      });
+      // this.onMarkdownUpload({ picURL: res.picURL, picName: res.picName });
     }, () => {
       console.log('Canceled upload');
     });
