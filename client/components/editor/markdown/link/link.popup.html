@@ -1,18 +1,20 @@
 <div layout="column" layout-align="center center"
      style="background-color: #f2f2f2" class="md-padding">
-    <md-input-container>
-        <label>Link Text</label>
-        <input ng-model="ctrl.linkText">
-    </md-input-container>
-    <md-input-container>
-        <label>URL</label>
-        <input ng-model="ctrl.linkUrl">
-    </md-input-container>
+  <md-input-container>
+    <label>Link Text</label>
+    <input ng-model="ctrl.linkText">
+  </md-input-container>
+  <md-input-container>
+    <label>URL</label>
+    <input ng-model="ctrl.linkUrl">
+  </md-input-container>
 
+  <md-dialog-actions>
     <md-button class="md-primary" ng-click="ctrl.ok()" >
         OK
     </md-button>
     <md-button class="md-primary" ng-click="ctrl.cancel()">
         Cancel
     </md-button>
+  </md-dialog-actions>
 </div>
