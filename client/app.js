@@ -1,6 +1,6 @@
 'use strict';
 
-const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages']);
+const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages', 'lbServices']);
 
 UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
   $locationProvider.html5Mode(true);
