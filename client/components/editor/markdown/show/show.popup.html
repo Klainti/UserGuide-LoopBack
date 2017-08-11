@@ -1,19 +1,22 @@
-<md-dialog aria-label="Show Pictures">
+<md-dialog aria-label="Show Pictures" layout="column" layout-align="center center"
+           style="background-color: #f2f2f2" class="md-padding">
   <md-dialog-content layout="column">
-    <md-input-container>
+    <md-input-container flex>
       <label>Search</label>
       <input ng-model="search">
     </md-input-container><br>
     <md-list>
-      <md-list-item ng-repeat="picture in ctrl.pictures | filter:search">
-        <p>{{picture.name}}</p>
-        <img ng-src="http://localhost:3000/api/Pictures/{{picture.id}}" alt="Empty" height="100" width="100"/>
-        <md-button class="md-primary" ng-click="ctrl.insertBtn(picture.id)">
-          Insert
-        </md-button>
-        <md-button class="md-primary" ng-click="ctrl.deleteBtn(picture.id)">
-          Delete
-        </md-button>
+      <md-list-item layout="row" ng-repeat="picture in ctrl.pictures | filter:search">
+        <p flex>{{picture.name}}</p>
+        <img flex ng-src="http://localhost:3000/api/Pictures/{{picture.id}}" alt="Empty" height="150" width="150"/>
+        <div layout="column" flex>
+          <md-button class="md-primary" ng-click="ctrl.insertBtn(picture.id)">
+            Insert
+          </md-button>
+          <md-button class="md-primary" ng-click="ctrl.deleteBtn(picture.id)">
+            Delete
+          </md-button>
+        </div>
       </md-list-item>
     </md-list>
   </md-dialog-content>
