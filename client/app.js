@@ -22,7 +22,8 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
         component: 'editorComponent',
         params: {
           id: null, // if 0, create else edit
-          path: null
+          path: null,
+          name: null
         },
         resolve: {
           markdownData: ($stateParams, Resources) => {
