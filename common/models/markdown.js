@@ -50,6 +50,7 @@ module.exports = (Markdown) => {
     }
   });
 
+  /* Get siblings of the new markdown for Catalog! */
   Markdown.afterRemote('upsertWithWhere', (ctx, modelInstance, next) => {
     Markdown.app.FS.getTreeByPath(modelInstance.path)
       .then((siblings) => {
@@ -59,6 +60,32 @@ module.exports = (Markdown) => {
       })
       .catch((error) => {
         next(error);
+      });
+  });
+
+  /* Get path from requested id. */
+  Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
+    Markdown.findOne({ where: { _id: ctx.req.params.id } })
+      .then((result) => {
+        ctx.DeleteUpPath = result.path; //pass the path to afterRemote!
+        next();
+      })
+      .catch((error) => {
+        next(error);
+      });
+  });
+
+  /* Search and delete empty folders! */
+  Markdown.afterRemote('deleteById', (ctx, modelInstance, next) => {
+    Markdown.app.FS.deleteUp(ctx.DeleteUpPath)
+      .then((result) => {
+        if (result[0] !== null) {
+          next(result[0]);
+        } else {
+          const list = Markdown.app.catalog.CreateList(result[1]);
+          ctx.result = { list };
+          next();
+        }
       });
   });
 };
