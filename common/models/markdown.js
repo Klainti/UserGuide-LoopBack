@@ -23,6 +23,7 @@ module.exports = (Markdown) => {
     accepts: [{ arg: 'name', type: 'string' },
               { arg: 'path', type: 'string' }],
     returns: { arg: 'html', type: 'string' },
+    description: 'Find Welcome Page',
     http: { path: '/welcomePage', verb: 'get' }
   });
 
@@ -39,6 +40,7 @@ module.exports = (Markdown) => {
   Markdown.remoteMethod('preview', {
     accepts: { arg: 'data', type: 'string' },
     returns: { arg: 'html', type: 'string' },
+    description: 'Convert markdown to html',
     http: { path: '/preview', verb: 'get' }
   });
 
@@ -60,6 +62,7 @@ module.exports = (Markdown) => {
       { arg: 'path', type: 'string' },
       { arg: 'linkText', type: 'string' }],
     returns: { arg: 'link', type: 'string' },
+    description: "Convert markdown's path to link",
     http: { path: '/getLink', verb: 'get' }
   });
 
