@@ -46,15 +46,18 @@ module.exports = (Markdown) => {
 
   /* Convert the path of a markdown to link. Return /guide/{id of markdown} */
   Markdown.getLink = (name, path, linkText, cb) => {
-    Markdown.findOne({ where: { name, path } })
-      .then((result) => {
-        console.log(result);
-        const link = `[${linkText}](/guide/${result.id})`;
-        cb(null, link);
-      })
-      .catch((error) => {
-        cb(error, null);
-      });
+    if (!PathValidation.test(path) && path !== '/') {
+      cb('Invalid Path', null);
+    } else {
+      Markdown.findOne({ where: { name, path } })
+        .then((result) => {
+          const link = `[${linkText}](/guide/${result.id})`;
+          cb(null, link);
+        })
+        .catch((error) => {
+          cb(error, null);
+        });
+    }
   };
 
   Markdown.remoteMethod('getLink', {
