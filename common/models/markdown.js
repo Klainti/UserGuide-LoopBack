@@ -8,10 +8,9 @@ const PathValidation = new RegExp(config.PathValidation, 'm');
 
 module.exports = (Markdown) => {
   /* Serve Welcome Page! */
-  Markdown.WelcomePage = (name, path, cb) => {
+  Markdown.welcomePage = (name, path, cb) => {
     Markdown.findOne({ where: { name, path } })
       .then((result) => {
-        console.log(result);
         const html = converter.makeHtml(result.data);
         cb(null, html);
       })
@@ -20,11 +19,11 @@ module.exports = (Markdown) => {
       });
   };
 
-  Markdown.remoteMethod('WelcomePage', {
+  Markdown.remoteMethod('welcomePage', {
     accepts: [{ arg: 'name', type: 'string' },
               { arg: 'path', type: 'string' }],
     returns: { arg: 'html', type: 'string' },
-    http: { path: '/welcome', verb: 'get' }
+    http: { path: '/welcomePage', verb: 'get' }
   });
 
   /* Convert a markdown text to html! */
@@ -41,6 +40,27 @@ module.exports = (Markdown) => {
     accepts: { arg: 'data', type: 'string' },
     returns: { arg: 'html', type: 'string' },
     http: { path: '/preview', verb: 'get' }
+  });
+
+  /* Convert the path of a markdown to link. Return /guide/{id of markdown} */
+  Markdown.getLink = (name, path, linkText, cb) => {
+    Markdown.findOne({ where: { name, path } })
+      .then((result) => {
+        console.log(result);
+        const link = `[${linkText}](/guide/${result.id})`;
+        cb(null, link);
+      })
+      .catch((error) => {
+        cb(error, null);
+      });
+  };
+
+  Markdown.remoteMethod('getLink', {
+    accepts: [{ arg: 'name', type: 'string' },
+      { arg: 'path', type: 'string' },
+      { arg: 'linkText', type: 'string' }],
+    returns: { arg: 'link', type: 'string' },
+    http: { path: '/getLink', verb: 'get' }
   });
 
   /* Create folders */
