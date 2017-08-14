@@ -7,6 +7,26 @@ const converter = new showdown.Converter();
 const PathValidation = new RegExp(config.PathValidation, 'm');
 
 module.exports = (Markdown) => {
+  /* Serve Welcome Page! */
+  Markdown.WelcomePage = (name, path, cb) => {
+    Markdown.findOne({ where: { name, path } })
+      .then((result) => {
+        console.log(result);
+        const html = converter.makeHtml(result.data);
+        cb(null, html);
+      })
+      .catch((error) => {
+        cb(error, null);
+      });
+  };
+
+  Markdown.remoteMethod('WelcomePage', {
+    accepts: [{ arg: 'name', type: 'string' },
+              { arg: 'path', type: 'string' }],
+    returns: { arg: 'html', type: 'string' },
+    http: { path: '/welcome', verb: 'get' }
+  });
+
   /* Convert a markdown text to html! */
   Markdown.preview = (data, cb) => {
     try {
@@ -56,7 +76,7 @@ module.exports = (Markdown) => {
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
     Markdown.findOne({ where: { _id: ctx.req.params.id } })
       .then((result) => {
-        ctx.DeleteUpPath = result.path; //pass the path to afterRemote!
+        ctx.DeleteUpPath = result.path; // pass the path to afterRemote!
         next();
       })
       .catch((error) => {
