@@ -2,10 +2,12 @@
     <md-list class="md-dense" flex>
         <div ng-switch on="$ctrl.isAdmin">
             <ul ng-switch-when="true">
+              <form ng-submit="$ctrl.pathSubmit()" name="pathForm">
                 <md-input-container>
-                    <label>Path</label>
-                    <input ng-model="$ctrl.catalogPath">
+                  <label>Path</label>
+                  <input ng-model="$ctrl.catalogPath">
                 </md-input-container>
+              </form>
             </ul>
         </div>
         <md-list-item ng-repeat="catalogItem in $ctrl.catalogList">
@@ -18,12 +20,6 @@
                             </a></b>
                         </li>
                     </ul>
-                </div>
-                <span flex></span>
-                <div ng-switch on="$ctrl.isAdmin">
-                    <a ng-switch-when="true">
-                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</md-button>
-                    </a>
                 </div>
             </div>
             <div layout="row" ng-if="catalogItem.type === 'md'" ng-switch on="$ctrl.isAdmin" flex>
@@ -40,7 +36,7 @@
                         <md-button class="md-raised md-primary">Edit</md-button>
                     </a>
                     <a ng-switch-when="true">
-                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.type)">Delete</md-button>
+                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id)">Delete</md-button>
                     </a>
                 </div>
             </div>

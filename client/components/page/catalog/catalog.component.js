@@ -1,11 +1,9 @@
 'use strict';
 
 class CatalogController {
-  constructor($mdDialog, $stateParams, Resources, Folder) {
+  constructor($mdDialog, $stateParams, Folder) {
     this.$mdDialog = $mdDialog;
     this.Folder = Folder;
-    this.Show = Resources.getShowUrl();
-    this.Markdown = Resources.getMarkdownUrl();
     this.$stateParams = $stateParams;
   }
   $onInit() {
@@ -20,7 +18,16 @@ class CatalogController {
       this.catalogPath = '';
     });
   }
-  deleteBtn(id, type) {
+  pathSubmit() {
+    this.Folder.getContent({ path: this.catalogPath }, (res) => {
+      this.catalogList = res.list;
+    }, (error) => {
+      console.log(error.message);
+      this.catalogList = undefined;
+      this.catalogPath = '';
+    });
+  }
+  deleteBtn(id) {
     this.$mdDialog.show(
         this.$mdDialog.confirm()
             .title(`Delete ${type}`)
@@ -28,10 +35,10 @@ class CatalogController {
             .ok('Ok')
             .cancel('Cancel')
     ).then(() => {
-      this.Markdown.delete({ id, type }, (res) => {
+      this.Markdown.deleteById({ id }, (res) => {
         this.catalogList = res.list;
-        this.catalogPath = res.list[0].path;
-        console.log(`Deleted ${type} with id ${id}`);
+        this.catalogPath = res.path;
+        console.log(`Deleted MD with id ${id}`);
       });
     }, () => {
       console.log('Canceled delete');
@@ -39,11 +46,8 @@ class CatalogController {
   }
   goBackBtn() {
     this.newFileId = '';
-    console.log(this.catalogPath);
     const path = CatalogController.pathSlice(this.catalogPath);
-    console.log(path);
     this.Folder.getContent({ path }, (res) => {
-      console.log(res.list);
       this.catalogList = res.list;
       this.catalogPath = path;
     }, (error) => {
@@ -80,7 +84,12 @@ class CatalogController {
     }
   }
   static pathAppend(path, folderName) {
-    return `${path}/${folderName}`;
+    const res = path.split('/');
+    if (res.length === 2) {
+      return `/${folderName}`
+    } else {
+      return `${path}/${folderName}`;
+    }
   }
 }
 
@@ -89,10 +98,10 @@ angular.module('UserGuideApp')
       controller: CatalogController,
       templateUrl: 'components/page/catalog/catalog.view.html',
       bindings: {
+        fileCommand: '<',
         catalogList: '<',
         catalogPath: '<',
         newFileId: '<',
-        fileCommand: '<',
         isAdmin: '<'
       }
     });
