@@ -23,13 +23,11 @@ class UploadController {
       controller: UploadPopUpController,
       controllerAs: 'ctrl'
     }).then((res) => {
-      console.log(res.picURL);
       this.Picture.create({ name: res.picName, url: res.picURL }, (res) => {
         console.log(res.message);
       }, (error) => {
         console.log(error.message);
       });
-      // this.onMarkdownUpload({ picURL: res.picURL, picName: res.picName });
     }, () => {
       console.log('Canceled upload');
     });
