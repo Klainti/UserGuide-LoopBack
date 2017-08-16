@@ -2954,40 +2954,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
-             * @name lbServices.Markdown#welcomePage
-             * @methodOf lbServices.Markdown
-             *
-             * @description
-             *
-             * Find Welcome Page
-             *
-             * @param {Object=} parameters Request parameters.
-             *
-             *  - `name` – `{string=}` -
-             *
-             *  - `path` – `{string=}` -
-             *
-             * @param {function(Object,Object)=} successCb
-             *   Success callback with two arguments: `value`, `responseHeaders`.
-             *
-             * @param {function(Object)=} errorCb Error callback with one argument:
-             *   `httpResponse`.
-             *
-             * @returns {Object} An empty reference that will be
-             *   populated with the actual data once the response is returned
-             *   from the server.
-             *
-             * Data properties:
-             *
-             *  - `html` – `{string=}` -
-             */
-            "welcomePage": {
-              url: urlBase + "/Markdowns/welcomePage",
-              method: "GET",
-            },
-
-            /**
-             * @ngdoc method
              * @name lbServices.Markdown#preview
              * @methodOf lbServices.Markdown
              *
@@ -3020,6 +2986,38 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
+             * @name lbServices.Markdown#getHtml
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Get HTML by {id}
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `id` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `html` – `{string=}` -
+             */
+            "getHtml": {
+              url: urlBase + "/Markdowns/:id/preview",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
              * @name lbServices.Markdown#getLink
              * @methodOf lbServices.Markdown
              *
@@ -3033,7 +3031,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              *
              *  - `path` – `{string=}` -
              *
-             *  - `linkText` – `{string=}` -
+             *  - `text` – `{string=}` -
              *
              * @param {function(Object,Object)=} successCb
              *   Success callback with two arguments: `value`, `responseHeaders`.
