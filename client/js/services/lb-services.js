@@ -2954,14 +2954,46 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
 
             /**
              * @ngdoc method
+             * @name lbServices.Markdown#welcomePage
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Find Welcome Page
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `name` – `{string=}` -
+             *
+             *  - `path` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `html` – `{string=}` -
+             */
+            "welcomePage": {
+              url: urlBase + "/Markdowns/welcomePage",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
              * @name lbServices.Markdown#preview
              * @methodOf lbServices.Markdown
              *
              * @description
              *
-             * <em>
-             * (The remote method definition does not provide any description.)
-             * </em>
+             * Convert markdown to html
              *
              * @param {Object=} parameters Request parameters.
              *
@@ -2983,6 +3015,42 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              */
             "preview": {
               url: urlBase + "/Markdowns/preview",
+              method: "GET",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Markdown#getLink
+             * @methodOf lbServices.Markdown
+             *
+             * @description
+             *
+             * Convert markdown's path to link
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `name` – `{string=}` -
+             *
+             *  - `path` – `{string=}` -
+             *
+             *  - `linkText` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `link` – `{string=}` -
+             */
+            "getLink": {
+              url: urlBase + "/Markdowns/getLink",
               method: "GET",
             },
           }
@@ -3821,6 +3889,38 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
             "createChangeStream": {
               url: urlBase + "/Folders/change-stream",
               method: "POST",
+            },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Folder#getContent
+             * @methodOf lbServices.Folder
+             *
+             * @description
+             *
+             * Get content of a folder
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *  - `path` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * Data properties:
+             *
+             *  - `list` – `{string=}` -
+             */
+            "getContent": {
+              url: urlBase + "/Folders/getContent",
+              method: "GET",
             },
           }
         );
