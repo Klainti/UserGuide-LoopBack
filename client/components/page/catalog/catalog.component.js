@@ -1,8 +1,9 @@
 'use strict';
 
 class CatalogController {
-  constructor($mdDialog, $stateParams, Resources) {
+  constructor($mdDialog, $stateParams, Resources, Folder) {
     this.$mdDialog = $mdDialog;
+    this.Folder = Folder;
     this.Show = Resources.getShowUrl();
     this.Markdown = Resources.getMarkdownUrl();
     this.$stateParams = $stateParams;
@@ -10,12 +11,13 @@ class CatalogController {
   $onInit() {
     this.newFileId = '';
     this.fileCommand = '';
-    this.Show.get((res) => {
+    this.Folder.getContent({ path: '/'}, (res) => {
+      this.catalogPath = '/';
       this.catalogList = res.list;
-      this.catalogPath = '';
     }, (error) => {
       console.log(error);
       this.catalogList = undefined;
+      this.catalogPath = '';
     });
   }
   deleteBtn(id, type) {
@@ -37,20 +39,28 @@ class CatalogController {
   }
   goBackBtn() {
     this.newFileId = '';
-    this.Show.get({ id: this.catalogList[0].id, command: 'siblings', type: this.catalogList[0].type }, (res) => {
+    console.log(this.catalogPath);
+    const path = CatalogController.pathSlice(this.catalogPath);
+    console.log(path);
+    this.Folder.getContent({ path }, (res) => {
+      console.log(res.list);
       this.catalogList = res.list;
-      this.catalogPath = res.list[0].path;
+      this.catalogPath = path;
     }, (error) => {
       console.log(error.message);
       this.catalogList = undefined;
+      this.catalogPath = '';
     });
   }
-  openFolder(id) {
-    this.Show.get({ id }, (res) => {
+  openFolder(name) {
+    const path = CatalogController.pathAppend(this.catalogPath, name);
+    this.Folder.getContent({ path }, (res) => {
       this.catalogList = res.list;
-      this.catalogPath = res.list[0].path;
+      this.catalogPath = path;
     }, (error) => {
       console.log(error.message);
+      this.catalogList = undefined;
+      this.catalogPath = '';
     });
   }
   setItemColor(id) {
@@ -60,6 +70,17 @@ class CatalogController {
       return { 'color': 'orange' };
     }
     return { 'color': 'blue' };
+  }
+  static pathSlice(path) {
+    const res = path.split('/');
+    if (res.length === 2) {
+      return '/';
+    } else {
+      return path.slice(path.lastIndexOf('/'));
+    }
+  }
+  static pathAppend(path, folderName) {
+    return `${path}/${folderName}`;
   }
 }
 

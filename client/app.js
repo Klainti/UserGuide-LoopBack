@@ -4,16 +4,19 @@ const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 
 
 UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise('/guide/welcome.md');
+  $urlRouterProvider.otherwise('/guide/welcome');
 
   $stateProvider
       .state('guide', {
         url: '/guide/:id', // TODO /prefix/:id
         component: 'guideComponent',
+        params: {
+          id: null
+        },
         resolve: {
-          welcomePage: ($stateParams, Resources) => {
-            return Resources.getPageUrl().get({ id: $stateParams.id })
-                .$promise.then(res => res.html);
+          pageData: ($stateParams, Markdown) => {
+            return Markdown.welcomePage({ id: $stateParams.id })
+              .$promise.then(res => res.html);
           }
         }
       })
@@ -21,7 +24,7 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
         url: '/editor/:id',
         component: 'editorComponent',
         params: {
-          id: null, // if 0, create else edit
+          id: null, // if 0 create else edit
           path: null,
           name: null
         },

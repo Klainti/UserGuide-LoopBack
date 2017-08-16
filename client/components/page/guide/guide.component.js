@@ -2,7 +2,7 @@
 
 class GuideController {
   $onInit() {
-    this.previewHtml = this.welcomePage;
+    this.pageHtml = this.pageData;
   }
 }
 
@@ -11,7 +11,7 @@ angular.module('UserGuideApp')
       controller: GuideController,
       templateUrl: 'components/page/guide/guide.view.html',
       bindings: {
-        welcomePage: '<' // resolved data
+        pageData: '<' // resolved data
       }
     });
 
