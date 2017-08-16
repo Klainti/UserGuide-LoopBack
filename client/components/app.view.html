@@ -1,5 +1,5 @@
 <md-toolbar ng-switch on="$ctrl.isAdmin" layout="row" class="md-toolbar-tools">
-    <a ui-sref="guide({ id: 'welcome.md' })">
+    <a ui-sref="guide({ id: '59941d30f8a81962f2eb4b7f' })">
         <h1>User Guide</h1>
     </a>
     <span flex></span>
@@ -14,7 +14,7 @@
         <catalog-component file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.isAdmin"></catalog-component>
     </div>
     <div flex="70">
-        <ui-view on-editor-save="$ctrl.updateCatalog(command, list, newFileID, path)"></ui-view>
+        <ui-view on-editor-save="$ctrl.updateCatalog(command, list, path, newFileID)"></ui-view>
     </div>
 </div>
 
