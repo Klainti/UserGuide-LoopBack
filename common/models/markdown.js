@@ -1,16 +1,14 @@
 'use strict';
 
-const showdown = require('showdown');
 const config = require('../../server/config.json');
 
-const converter = new showdown.Converter();
 const PathValidation = new RegExp(config.PathValidation, 'm');
 
 module.exports = (Markdown) => {
   /* Convert a markdown text to html! */
   Markdown.preview = (data, cb) => {
     const result = Markdown.app.utils.ConvertToHtml(data);
-    if (result[0] === null){
+    if (result[0] === null) {
       cb(null, result[1]);
     } else {
       cb(result[0], null);
@@ -45,7 +43,7 @@ module.exports = (Markdown) => {
     Markdown.findOne({ where: { _id: id } })
       .then((result) => {
         const html = Markdown.app.utils.ConvertToHtml(result.data);
-        if (html[0] === null){
+        if (html[0] === null) {
           cb(null, html[1]);
         } else {
           cb(html[0], null);
@@ -59,7 +57,7 @@ module.exports = (Markdown) => {
   Markdown.remoteMethod('getHtml', {
     accepts: [{ arg: 'id', type: 'string' }],
     returns: { arg: 'html', type: 'string' },
-    description: "Get HTML by {id}",
+    description: 'Get HTML by {id}',
     http: { path: '/:id/preview', verb: 'get' }
   });
 
@@ -68,7 +66,7 @@ module.exports = (Markdown) => {
       { arg: 'path', type: 'string' },
       { arg: 'text', type: 'string' }],
     returns: { arg: 'link', type: 'string' },
-    description: "Convert markdown's path to link",
+    description: 'Convert markdown\'s path to link',
     http: { path: '/getLink', verb: 'get' }
   });
 
