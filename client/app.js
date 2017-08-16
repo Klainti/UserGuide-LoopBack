@@ -4,7 +4,7 @@ const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 
 
 UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise('/guide/59941d30f8a81962f2eb4b7f');
+  $urlRouterProvider.otherwise('/guide/59944d89925bec7138ef580f');
 
   $stateProvider
       .state('guide', {
