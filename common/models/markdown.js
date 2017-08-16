@@ -100,7 +100,7 @@ module.exports = (Markdown) => {
   });
 
   /* Change markdown's path! */
-  Markdown.beforeRemote('replaceById', (ctx, modelInstance, next) => {
+  Markdown.beforeRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
     if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
       next('Invalid Path');
     } else {
@@ -111,22 +111,20 @@ module.exports = (Markdown) => {
             next(error);
           });
       }
-      ctx.oldPath = Markdown.findOne({ where: { _id: ctx.req.params.id } });
-      console.log(ctx.oldPath);
+      ctx.oldPath = ctx.req.body.oldPath; // Pass old path to afterRemote and delete it from body!
+      delete ctx.req.body.oldPath;
       next();
     }
   });
 
   /* Check for empty folders in old path! */
-  Markdown.afterRemote('replaceById', (ctx, modelInstance, next) => {
-    console.log(modelInstance);
-    Markdown.app.FS.deleteUp(ctx.req.body.path)
+  Markdown.afterRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
+    Markdown.app.FS.deleteUp(ctx.oldPath)
       .then((result) => {
         if (result[0] !== null) {
-          Markdown.app.FS.getTreeByPath(modelInstance.path);
-        } else {
-          next(result[0]);
+          throw result[0];
         }
+        return Markdown.app.FS.getTreeByPath(modelInstance.path);
       })
       .then((siblings) => { // change path -> new catalog view!
         const list = Markdown.app.utils.CreateList(siblings);
@@ -137,6 +135,7 @@ module.exports = (Markdown) => {
         next(error);
       });
   });
+
 
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
