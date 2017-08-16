@@ -21,17 +21,15 @@ class SaveMarkdownController {
   saveBtn() {
     this.$mdDialog.show({
       templateUrl: 'components/editor/save/save.popup.html',
-      locals: { path: this.$stateParams.path, name: this.$stateParams.name },
+      locals: { name: this.$stateParams.name, path: this.$stateParams.path },
       controller: SavePopUpController,
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
       if (this.$stateParams.id === '0') {
-        this.onSave({ id: this.$stateParams.id, name: res.name, path: res.path });
-      } else if (this.$stateParams.path === res.path) {
-        this.onSave({ id: this.$stateParams.id, name: '', path: '' });
+        this.onSave({ id: '', name: res.name, path: res.path });
       } else {
-        this.onSave({ id: this.$stateParams.id, path: res.path });
+        this.onSave({ id: this.$stateParams.id, name: res.name, path: res.path, oldPath: this.$stateParams.path });
       }
     }, () => {
       console.log('Canceled save');

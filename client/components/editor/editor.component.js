@@ -18,23 +18,23 @@ class EditorController {
       this.previewHtml = '';
     }
   }
-  save(id, name, path) {
-    if (id === '0') {
+  save(id, name, path, oldPath) {
+    if (id === '') {
       this.Markdown.upsertWithWhere({ where: { name, path } }, { name, path, data: this.markdown }, (res) => {
         console.log(res);
         this.onEditorSave({ command: 'save', list: res.list, newFileID: res.newFile, path: res.path });
       }, (error) => {
         console.log(error.message);
       });
-    } else if (name === '' && path === '') {
-      this.Markdown.prototype$patchAttributes({ id, markdown: this.markdown }, () => {
-        this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
-      }, (error) => {
-        console.log(error.message);
-      });
     } else {
-      this.Markdown.save({ command: 'move', id, path, markdown: this.markdown }, (data) => {
-        this.onEditorSave({ command: 'move', list: data.list, path, newFileID: data.newFileID });
+      this.Markdown.prototype$patchAttributes({ id, name, path, markdown: this.markdown, oldPath }, (data) => {
+        console.log(path);
+        console.log(oldPath);
+        if (path === oldPath) {
+          this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
+        } else {
+          this.onEditorSave({ command: 'move', list: data.list, path: data.path, newFileID: id });
+        }
       }, (error) => {
         console.log(error.message);
       });
