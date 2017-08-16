@@ -160,7 +160,8 @@ module.exports = (Markdown) => {
           next(result[0]);
         } else {
           const list = Markdown.app.utils.CreateList(result[1]);
-          ctx.result = { list };
+          ctx.result = { list, path: result[2] };
+          console.log(result[1]);
           next();
         }
       });
