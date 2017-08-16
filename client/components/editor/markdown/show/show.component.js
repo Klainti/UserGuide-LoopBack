@@ -8,7 +8,6 @@ class ShowPopUpController {
   }
   $onInit() {
     this.Picture.find({ filter: { fields: {'name': true, 'id': true } } }, (res) => {
-      console.log(res);
       this.pictures = res;
     }, (error) => {
       console.log(error.message);
