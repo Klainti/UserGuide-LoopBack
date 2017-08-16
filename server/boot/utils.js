@@ -1,8 +1,8 @@
 'use strict';
 
-const Catalog = require('../../lib/Catalog');
+const Utils = require('../../lib/Utils');
 
 module.exports = function enableTree(app) {
   // enable Tree Structure Lib
-  app.catalog = new Catalog(app);
+  app.utils = new Utils(app);
 };
