@@ -1,8 +1,8 @@
 'use strict';
 
 class MarkdownController {
-  constructor(Resources) {
-    this.Link = Resources.getConvertLinkUrl();
+  constructor(Markdown) {
+    this.Markdown = Markdown;
     this.editing = true;
   }
   editBtn() {
@@ -15,8 +15,8 @@ class MarkdownController {
   insertPicture(id) {
     this.markdown = MarkdownController.insertPictureToEditor(id, this.markdown);
   }
-  addLink(linkText, linkUrl) {
-    this.Link.get({ linkText, linkUrl }, (res) => {
+  addLink(text, name, path) {
+    this.Markdown.getLink({ text, name, path }, (res) => {
       console.log(res.link);
       this.markdown = MarkdownController.addLinkToEditor(res.link, this.markdown);
     }, (error) => {

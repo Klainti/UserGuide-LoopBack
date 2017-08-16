@@ -5,7 +5,7 @@ class AddLinkPopUpController {
     this.$mdDialog = $mdDialog;
   }
   ok() {
-    this.$mdDialog.hide({ linkText: this.linkText, linkUrl: this.linkUrl });
+    this.$mdDialog.hide({ text: this.text, name: this.name, path: this.path });
   }
   cancel() {
     this.$mdDialog.cancel();
@@ -22,7 +22,7 @@ class AddLinkController {
       controller: AddLinkPopUpController,
       controllerAs: 'ctrl'
     }).then((res) => {
-      this.onAddLink({ linkText: res.linkText, linkUrl: res.linkUrl });
+      this.onAddLink({ text: res.text, name: res.name, path: res.path });
     }, () => {
       console.log('Canceled addLink');
     });
