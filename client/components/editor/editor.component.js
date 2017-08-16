@@ -27,9 +27,7 @@ class EditorController {
         console.log(error.message);
       });
     } else {
-      this.Markdown.prototype$patchAttributes({ id, name, path, markdown: this.markdown, oldPath }, (data) => {
-        console.log(path);
-        console.log(oldPath);
+      this.Markdown.prototype$patchAttributes({ id }, { name, path, data: this.markdown, oldPath }, (data) => {
         if (path === oldPath) {
           this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
         } else {
