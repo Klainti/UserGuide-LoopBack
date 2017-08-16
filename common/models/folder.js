@@ -5,7 +5,8 @@ module.exports = (Folder) => {
   Folder.getContent = (path, cb) => {
     Folder.app.FS.getTreeByPath(path)
       .then((children) => {
-        cb(null, children);
+        const list = Folder.app.utils.CreateList(children);
+        cb(null, list);
       })
       .catch((error) => {
         cb(error, null);
