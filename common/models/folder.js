@@ -29,7 +29,7 @@ module.exports = (Folder) => {
     }
     Folder.app.FS.getTreeByPath(ChildrenPath)
       .then((children) => {
-        const list = Folder.app.catalog.CreateList(children);
+        const list = Folder.app.utils.CreateList(children);
         ctx.result = { list, path: list[0].path };
         next();
       })
