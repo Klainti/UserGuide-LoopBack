@@ -76,23 +76,17 @@ module.exports = (Markdown) => {
       const error = new Error('Invalid Path');
       error.status = 400;
       next(error);
-    } else {
-      Markdown.app.FS.overwriteCheck(ctx.req.body.name, ctx.req.body.path, ctx.req.body.ovewrite)
+    } else if (ctx.req.body.path !== '/') { // create folders!
+      const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
+      Markdown.app.FS.saveFolder(Folders)
         .then(() => {
-          if (ctx.req.body.path !== '/') {
-            const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-            Markdown.app.FS.saveFolder(Folders)
-              .catch((error) => {
-                next(error);
-              });
-          }
-          /* Delete some attributes from req body */
-          delete ctx.req.body.overwrite;
           next();
         })
         .catch((error) => {
           next(error);
         });
+    } else {
+      next();
     }
   });
 
@@ -108,55 +102,6 @@ module.exports = (Markdown) => {
         next(error);
       });
   });
-
-  /* Change markdown's path! */
-  Markdown.beforeRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
-    if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
-      const error = new Error('Invalid Path');
-      error.status = 400;
-      next(error);
-    } else {
-      Markdown.app.FS.overwriteCheck(ctx.req.body.name, ctx.req.body.path, ctx.req.body.ovewrite)
-        .then(() => {
-          if (ctx.req.body.path !== '/') {
-            const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-            Markdown.app.FS.saveFolder(Folders)
-              .catch((error) => {
-                next(error);
-              });
-          }
-          /* Delete some attributes from req body */
-          ctx.oldPath = ctx.req.body.oldPath;
-          delete ctx.req.body.oldPath;
-          delete ctx.req.body.overwrite;
-          next();
-        })
-        .catch((error) => {
-          next(error);
-        });
-    }
-  });
-
-  /* Check for empty folders in old path! */
-  Markdown.afterRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
-    Markdown.app.FS.deleteUp(ctx.oldPath)
-      .then((result) => {
-        console.log(result);
-        if (result[1][0] !== null) {
-          throw result[1][0];
-        }
-        return Markdown.app.FS.getTreeByPath(modelInstance.path);
-      })
-      .then((siblings) => { // change path -> new catalog view!
-        const list = Markdown.app.utils.CreateList(siblings);
-        ctx.result = { list, newFile: modelInstance.id, path: modelInstance.path };
-        next();
-      })
-      .catch((error) => {
-        next(error);
-      });
-  });
-
 
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
@@ -179,7 +124,6 @@ module.exports = (Markdown) => {
         } else {
           const list = Markdown.app.utils.CreateList(result[1]);
           ctx.result = { list, path: result[2] };
-          console.log(result[1]);
           next();
         }
       });
