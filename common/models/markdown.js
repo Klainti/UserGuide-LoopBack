@@ -71,23 +71,33 @@ module.exports = (Markdown) => {
   });
 
   /* Create folders */
-  Markdown.beforeRemote('upsertWithWhere', (ctx, modelInstance, next) => {
+  Markdown.beforeRemote('create', (ctx, modelInstance, next) => {
     if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
-      next('Invalid Path');
+      const error = new Error('Invalid Path');
+      error.status = 400;
+      next(error);
     } else {
-      if (ctx.req.body.path !== '/') {
-        const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-        Markdown.app.FS.saveFolder(Folders)
-          .catch((error) => {
-            next(error);
-          });
-      }
-      next();
+      Markdown.app.FS.overwriteCheck(ctx.req.body.name, ctx.req.body.path, ctx.req.body.ovewrite)
+        .then(() => {
+          if (ctx.req.body.path !== '/') {
+            const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
+            Markdown.app.FS.saveFolder(Folders)
+              .catch((error) => {
+                next(error);
+              });
+          }
+          /* Delete some attributes from req body */
+          delete ctx.req.body.overwrite;
+          next();
+        })
+        .catch((error) => {
+          next(error);
+        });
     }
   });
 
   /* Get siblings of the new markdown for Catalog! */
-  Markdown.afterRemote('upsertWithWhere', (ctx, modelInstance, next) => {
+  Markdown.afterRemote('create', (ctx, modelInstance, next) => {
     Markdown.app.FS.getTreeByPath(modelInstance.path)
       .then((siblings) => {
         const list = Markdown.app.utils.CreateList(siblings);
@@ -102,7 +112,9 @@ module.exports = (Markdown) => {
   /* Change markdown's path! */
   Markdown.beforeRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
     if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
-      next('Invalid Path');
+      const error = new Error('Invalid Path');
+      error.status = 400;
+      next(error);
     } else {
       Markdown.app.FS.overwriteCheck(ctx.req.body.name, ctx.req.body.path, ctx.req.body.ovewrite)
         .then(() => {
