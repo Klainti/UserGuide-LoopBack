@@ -100,7 +100,7 @@ angular.module('UserGuideApp')
       bindings: {
         fileCommand: '<',
         catalogList: '<',
-        catalogPath: '<',
+        catalogPath: '=',
         newFileId: '<',
         isAdmin: '<'
       }
