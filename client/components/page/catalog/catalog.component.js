@@ -77,16 +77,16 @@ class CatalogController {
   }
   static pathSlice(path) {
     const res = path.split('/');
-    if (res.length === 2) {
+    if (res.length >= 2) {
       return '/';
     } else {
-      return path.slice(path.lastIndexOf('/'));
+      return path.slice(0, path.lastIndexOf('/'));
     }
   }
   static pathAppend(path, folderName) {
     const res = path.split('/');
-    if (res.length === 2) {
-      return `/${folderName}`
+    if (res.length === 2 && path.length === 1) {
+      return `/${folderName}`;
     } else {
       return `${path}/${folderName}`;
     }
