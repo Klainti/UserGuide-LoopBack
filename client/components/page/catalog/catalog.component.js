@@ -77,7 +77,7 @@ class CatalogController {
   }
   static pathSlice(path) {
     const res = path.split('/');
-    if (res.length >= 2) {
+    if (res.length <= 2) {
       return '/';
     } else {
       return path.slice(0, path.lastIndexOf('/'));
