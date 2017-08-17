@@ -8,6 +8,7 @@ class AppController {
       this.newItem = newFileID;
       this.command = 'save';
     } else if (command === 'update') {
+      this.catalog = list;
       this.newItem = newFileID;
       this.command = 'update';
     }

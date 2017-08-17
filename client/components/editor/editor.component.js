@@ -1,7 +1,9 @@
 'use strict';
 
 class EditorController {
-  constructor(Markdown) {
+  constructor($state, $stateParams, Markdown) {
+    this.$state = $state;
+    this.$stateParams = $stateParams;
     this.Markdown = Markdown;
   }
   $onInit() {
@@ -29,8 +31,10 @@ class EditorController {
     } else {
       this.Markdown.prototype$patchAttributes({ id }, { name, path, data: this.markdown, oldPath }, (data) => {
         if (path === oldPath) {
-          this.onEditorSave({ command: 'update', list: null, path: null, newFileID: id });
+          this.$state.go('editor', {id: this.$stateParams.id, name, path});
+          this.onEditorSave({ command: 'update', list: data.list, path: null, newFileID: id });
         } else {
+          this.$state.go('editor', {id: this.$stateParams.id, name, path});
           this.onEditorSave({ command: 'move', list: data.list, path: data.path, newFileID: id });
         }
       }, (error) => {
