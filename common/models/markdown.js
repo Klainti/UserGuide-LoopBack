@@ -104,16 +104,24 @@ module.exports = (Markdown) => {
     if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
       next('Invalid Path');
     } else {
-      if (ctx.req.body.path !== '/') {
-        const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-        Markdown.app.FS.saveFolder(Folders)
-          .catch((error) => {
-            next(error);
-          });
-      }
-      ctx.oldPath = ctx.req.body.oldPath; // Pass old path to afterRemote and delete it from body!
-      delete ctx.req.body.oldPath;
-      next();
+      Markdown.app.FS.overwriteCheck(ctx.req.body.name, ctx.req.body.path, ctx.req.body.ovewrite)
+        .then(() => {
+          if (ctx.req.body.path !== '/') {
+            const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
+            Markdown.app.FS.saveFolder(Folders)
+              .catch((error) => {
+                next(error);
+              });
+          }
+          /* Delete some attributes from req body */
+          ctx.oldPath = ctx.req.body.oldPath;
+          delete ctx.req.body.oldPath;
+          delete ctx.req.body.overwrite;
+          next();
+        })
+        .catch((error) => {
+          next(error);
+        });
     }
   });
 
@@ -121,8 +129,9 @@ module.exports = (Markdown) => {
   Markdown.afterRemote('prototype.patchAttributes', (ctx, modelInstance, next) => {
     Markdown.app.FS.deleteUp(ctx.oldPath)
       .then((result) => {
-        if (result[0] !== null) {
-          throw result[0];
+        console.log(result);
+        if (result[1][0] !== null) {
+          throw result[1][0];
         }
         return Markdown.app.FS.getTreeByPath(modelInstance.path);
       })
