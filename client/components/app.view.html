@@ -1,9 +1,9 @@
 <md-toolbar ng-switch on="$ctrl.isAdmin" layout="row" class="md-toolbar-tools">
-    <a ui-sref="guide({ id: '59944d89925bec7138ef580f' })">
+    <a ng-click="$ctrl.userGuideBtn()">
         <h1>User Guide</h1>
     </a>
     <span flex></span>
-    <a ng-switch-when="true" ui-sref="editor({ id: '0', name: '', path: '' })">
+    <a ng-switch-when="true" ng-click="$ctrl.editorBtn()">
         <md-button class="md-raised" aria-label="Editor">
             Editor
         </md-button>
