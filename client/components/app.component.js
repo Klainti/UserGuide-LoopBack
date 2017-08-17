@@ -16,17 +16,6 @@ class AppController {
       this.path = '';
     });
   }
-  editorBtn() {
-    this.path = '/'; // TODO binding not loading correctly
-    this.Folder.getContent({ path: '/' }, (res) => {
-      this.catalog = res.list;
-      this.$state.go('editor', {id: '0', name: '', path: ''});
-    }, (error) => {
-      console.log(error.message);
-      this.catalog = undefined;
-      this.path = '';
-    });
-  }
   updateCatalog(command, list, path, newFileID) {
     if (command === 'save' || command === 'move') {
       this.catalog = list;

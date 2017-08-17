@@ -3,7 +3,7 @@
         <h1>User Guide</h1>
     </a>
     <span flex></span>
-    <a ng-switch-when="true" ng-click="$ctrl.editorBtn()">
+    <a ng-switch-when="true" ui-sref="editor({ id: '0', name: '', path: $ctrl.path })">
         <md-button class="md-raised" aria-label="Editor">
             Editor
         </md-button>
