@@ -1,10 +1,11 @@
 'use strict';
 
 class CatalogController {
-  constructor($mdDialog, $stateParams, Folder) {
+  constructor($mdDialog, $stateParams, Folder, Markdown) {
     this.$mdDialog = $mdDialog;
-    this.Folder = Folder;
     this.$stateParams = $stateParams;
+    this.Folder = Folder;
+    this.Markdown = Markdown;
   }
   $onInit() {
     this.newFileId = '';
@@ -21,24 +22,21 @@ class CatalogController {
   pathSubmit() {
     this.Folder.getContent({ path: this.catalogPath }, (res) => {
       this.catalogList = res.list;
-    }, (error) => {
-      console.log(error.message);
-      this.catalogList = undefined;
-      this.catalogPath = '';
     });
   }
-  deleteBtn(id) {
+  deleteBtn(id, name) {
     this.$mdDialog.show(
         this.$mdDialog.confirm()
-            .title(`Delete ${type}`)
-            .textContent('Are you sure you want to delete?')
+            .title(`Are you sure you want to delete ${name} ?`)
             .ok('Ok')
             .cancel('Cancel')
     ).then(() => {
       this.Markdown.deleteById({ id }, (res) => {
-        this.catalogList = res.list;
-        this.catalogPath = res.path;
         console.log(`Deleted MD with id ${id}`);
+        this.catalogPath = res.path;
+        this.Folder.getContent({ path: res.path }, (res) => {
+          this.catalogList = res.list;
+        });
       });
     }, () => {
       console.log('Canceled delete');
@@ -50,10 +48,6 @@ class CatalogController {
     this.Folder.getContent({ path }, (res) => {
       this.catalogList = res.list;
       this.catalogPath = path;
-    }, (error) => {
-      console.log(error.message);
-      this.catalogList = undefined;
-      this.catalogPath = '';
     });
   }
   openFolder(name) {
@@ -61,10 +55,6 @@ class CatalogController {
     this.Folder.getContent({ path }, (res) => {
       this.catalogList = res.list;
       this.catalogPath = path;
-    }, (error) => {
-      console.log(error.message);
-      this.catalogList = undefined;
-      this.catalogPath = '';
     });
   }
   setItemColor(id) {
