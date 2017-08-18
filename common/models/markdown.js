@@ -89,7 +89,7 @@ module.exports = (Markdown) => {
       next();
     }
   });
-
+  
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
     Markdown.findOne({ where: { _id: ctx.req.params.id } })
@@ -111,6 +111,7 @@ module.exports = (Markdown) => {
       })
       .catch((error) => {
         next(error);
+
       });
   });
 };
