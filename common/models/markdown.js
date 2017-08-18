@@ -90,19 +90,6 @@ module.exports = (Markdown) => {
     }
   });
 
-  /* Get siblings of the new markdown for Catalog! */
-  Markdown.afterRemote('create', (ctx, modelInstance, next) => {
-    Markdown.app.FS.getTreeByPath(modelInstance.path)
-      .then((siblings) => {
-        const list = Markdown.app.utils.CreateList(siblings);
-        ctx.result = { list, newFile: modelInstance.id, path: modelInstance.path };
-        next();
-      })
-      .catch((error) => {
-        next(error);
-      });
-  });
-
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
     Markdown.findOne({ where: { _id: ctx.req.params.id } })
@@ -118,14 +105,12 @@ module.exports = (Markdown) => {
   /* Search and delete empty folders! */
   Markdown.afterRemote('deleteById', (ctx, modelInstance, next) => {
     Markdown.app.FS.deleteUp(ctx.DeleteUpPath)
-      .then((result) => {
-        if (result[0] !== null) {
-          next(result[0]);
-        } else {
-          const list = Markdown.app.utils.CreateList(result[1]);
-          ctx.result = { list, path: result[2] };
-          next();
-        }
+      .then((path) => {
+        ctx.result = { path };
+        next();
+      })
+      .catch((error) => {
+        next(error);
       });
   });
 };
