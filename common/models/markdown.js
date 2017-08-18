@@ -89,6 +89,14 @@ module.exports = (Markdown) => {
       next();
     }
   });
+  Markdown.afterRemote('findOne', (ctx, modelInstance, next) => {
+    if (modelInstance) {
+      next();
+    } else {
+      ctx.result = {};
+      next();
+    }
+  });
 
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
