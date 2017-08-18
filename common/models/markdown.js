@@ -91,6 +91,7 @@ module.exports = (Markdown) => {
   });
   Markdown.afterRemote('findOne', (ctx, modelInstance, next) => {
     if (modelInstance) {
+      ctx.result = { modelInstance };
       next();
     } else {
       ctx.result = {};
