@@ -27,9 +27,9 @@ class SaveMarkdownController {
       clickOutsideToClose: true
     }).then((res) => {
       if (this.$stateParams.id === '0') {
-        this.onSave({ id: '', name: res.name, path: res.path });
+        this.onSave({ id: '0', name: res.name, path: res.path });
       } else {
-        this.onSave({ id: this.$stateParams.id, name: res.name, path: res.path, oldPath: this.$stateParams.path });
+        this.onSave({ id: this.$stateParams.id, name: res.name, oldName: this.$stateParams.name, path: res.path, oldPath: this.$stateParams.path });
       }
     }, () => {
       console.log('Canceled save');

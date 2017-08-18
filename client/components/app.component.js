@@ -16,17 +16,13 @@ class AppController {
       this.path = '';
     });
   }
-  updateCatalog(command, list, path, newFileID) {
-    if (command === 'save' || command === 'move') {
-      this.catalog = list;
+  updateCatalog(command, path, newFileID) {
+    this.Folder.getContent({ path }, (res) => {
+      this.catalog = res.list;
+      this.command = command;
       this.path = path;
       this.newItem = newFileID;
-      this.command = 'save';
-    } else if (command === 'update') {
-      this.catalog = list;
-      this.newItem = newFileID;
-      this.command = 'update';
-    }
+    });
   }
 }
 
