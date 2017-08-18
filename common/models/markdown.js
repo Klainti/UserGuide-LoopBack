@@ -38,6 +38,15 @@ module.exports = (Markdown) => {
     }
   };
 
+  Markdown.remoteMethod('getLink', {
+    accepts: [{ arg: 'name', type: 'string' },
+      { arg: 'path', type: 'string' },
+      { arg: 'text', type: 'string' }],
+    returns: { arg: 'link', type: 'string' },
+    description: 'Convert markdown\'s path to link',
+    http: { path: '/getLink', verb: 'get' }
+  });
+
   /* Search for a markdown and convert it to HTML */
   Markdown.getHtml = (id, cb) => {
     Markdown.findOne({ where: { _id: id } })
@@ -61,15 +70,6 @@ module.exports = (Markdown) => {
     http: { path: '/:id/preview', verb: 'get' }
   });
 
-  Markdown.remoteMethod('getLink', {
-    accepts: [{ arg: 'name', type: 'string' },
-      { arg: 'path', type: 'string' },
-      { arg: 'text', type: 'string' }],
-    returns: { arg: 'link', type: 'string' },
-    description: 'Convert markdown\'s path to link',
-    http: { path: '/getLink', verb: 'get' }
-  });
-
   /* Create folders */
   Markdown.beforeRemote('create', (ctx, modelInstance, next) => {
     if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
@@ -89,7 +89,7 @@ module.exports = (Markdown) => {
       next();
     }
   });
-  
+
   /* Get path from requested id */
   Markdown.beforeRemote('deleteById', (ctx, modelInstance, next) => {
     Markdown.findOne({ where: { _id: ctx.req.params.id } })
@@ -111,7 +111,6 @@ module.exports = (Markdown) => {
       })
       .catch((error) => {
         next(error);
-
       });
   });
 };
