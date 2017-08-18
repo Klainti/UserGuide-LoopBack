@@ -63,7 +63,7 @@ class EditorController {
             saveInfo.newFileID = res.id;
           }
           if (id !== '0') {
-            // we already moved the markdown to a new path (or changed the name), so delete the previous markdown
+            // we already created/moved the markdown to a new path (or created a new one on the same folder with another name), so delete the previous markdown
             this.Markdown.deleteById({ id }, () => {
               console.log(`Deleted MD with id ${id}`);
               this.onEditorSave(saveInfo);
