@@ -1,8 +1,15 @@
 'use strict';
 
 class GuideController {
+  constructor($stateParams, Markdown) {
+    this.$stateParams = $stateParams;
+    this.Markdown = Markdown;
+  }
   $onInit() {
     this.pageHtml = this.pageData;
+    this.Markdown.findById({ id: this.$stateParams.id }, (res) => {
+      this.onNewMarkdown({ command: '', path: res.path, newFileID: '' });
+    });
   }
 }
 
@@ -11,7 +18,8 @@ angular.module('UserGuideApp')
       controller: GuideController,
       templateUrl: 'components/page/guide/guide.view.html',
       bindings: {
-        pageData: '<' // resolved data
+        pageData: '<', // resolved data
+        onNewMarkdown: '&'
       }
     });
 
