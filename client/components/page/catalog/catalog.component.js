@@ -13,10 +13,6 @@ class CatalogController {
     this.Folder.getContent({ path: '/'}, (res) => {
       this.catalogPath = '/';
       this.catalogList = res.list;
-    }, (error) => {
-      console.log(error);
-      this.catalogList = undefined;
-      this.catalogPath = '';
     });
   }
   pathSubmit() {
