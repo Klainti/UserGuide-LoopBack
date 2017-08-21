@@ -1,15 +1,19 @@
 'use strict';
 
 class EditorController {
-  constructor($state, $stateParams, $mdDialog, $q, Markdown) {
+  constructor($state, $stateParams, $mdDialog, $q, Markdown, ngConfig) {
     this.$state = $state;
     this.$stateParams = $stateParams;
     this.$mdDialog = $mdDialog;
     this.$q = $q;
     this.Markdown = Markdown;
+    this.ngConfig = ngConfig;
   }
   $onInit() {
-    this.markdown = this.markdownData;
+    this.markdown = this.markdownDetails.data;
+  }
+  goBackBtn(){
+    this.$state.go(this.ngConfig.prefix, {id: this.ngConfig.initID});
   }
   preview() {
     if (this.markdown !== '') {
@@ -26,7 +30,7 @@ class EditorController {
     let existedId;
     let saveInfo;
     if (name === oldName && path === oldPath) {
-      // update data only (markdown)
+      // update markdown data only
       this.Markdown.prototype$patchAttributes({ id }, { data: this.markdown, }, () => {
         this.onEditorSave({ command: 'update', path, newFileID: id });
       });
@@ -81,10 +85,10 @@ class EditorController {
 
 angular.module('UserGuideApp')
   .component('editorComponent', {
-    controller: EditorController,
+    controller: ['$state', '$stateParams', '$mdDialog', '$q', 'Markdown', 'ngConfig', EditorController],
     templateUrl: 'components/editor/editor.view.html',
     bindings: {
-      markdownData: '<', // resolved data
+      markdownDetails: '<', // resolved data
       onEditorSave: '&'
     }
   });

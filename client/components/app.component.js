@@ -1,15 +1,16 @@
 'use strict';
 
 class AppController {
-  constructor($state, Folder) {
+  constructor(ngConfig, $state, Folder) {
+    this.ngConfig = ngConfig;
     this.$state = $state;
     this.Folder = Folder;
   }
   userGuideBtn() {
-    this.path = '/'; // TODO binding not loading correctly
+    this.path = '/';
     this.Folder.getContent({ path: '/' }, (res) => {
       this.catalog = res.list;
-      this.$state.go('guide', {id: '59944d89925bec7138ef580f' });
+      this.$state.go(this.ngConfig.prefix, {id: this.ngConfig.initID });
     }, (error) => {
       console.log(error.message);
       this.catalog = undefined;
@@ -28,7 +29,7 @@ class AppController {
 
 angular.module('UserGuideApp')
     .component('appComponent', {
-      controller: AppController,
+      controller: ['ngConfig', '$state', 'Folder', AppController],
       templateUrl: 'components/app.view.html',
       bindings: {
         isAdmin: '@'
