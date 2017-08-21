@@ -21,7 +21,8 @@ class UploadController {
     this.$mdDialog.show({
       templateUrl: 'components/editor/markdown/upload/upload.popup.html',
       controller: UploadPopUpController,
-      controllerAs: 'ctrl'
+      controllerAs: 'ctrl',
+      clickOutsideToClose: true
     }).then((res) => {
       this.Picture.create({ name: res.picName, url: res.picURL }, (res) => {
         console.log(res.message);

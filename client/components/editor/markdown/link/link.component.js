@@ -20,7 +20,8 @@ class AddLinkController {
     this.$mdDialog.show({
       templateUrl: 'components/editor/markdown/link/link.popup.html',
       controller: AddLinkPopUpController,
-      controllerAs: 'ctrl'
+      controllerAs: 'ctrl',
+      clickOutsideToClose: true
     }).then((res) => {
       this.onAddLink({ text: res.text, name: res.name, path: res.path });
     }, () => {
