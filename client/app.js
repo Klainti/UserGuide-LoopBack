@@ -29,17 +29,14 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngCo
         url: '/editor/:id',
         component: 'editorComponent',
         params: {
-          id: null, // if 0 create else edit
-          name: null,
-          path: null
+          id: null // if 0 create else edit
         },
         resolve: {
-          markdownData: ($stateParams, Markdown) => {
+          markdownDetails: ($q, $stateParams, Markdown) => {
             if ($stateParams.id === '0') {
-              return '';
+              return $q.resolve({ id: $stateParams.id, name: '', path: '' });
             }
-            return Markdown.findById({ id: $stateParams.id }).$promise
-              .then(res => res.data);
+            return Markdown.findById({ id: $stateParams.id }).$promise;
           },
         }
       });

@@ -14,22 +14,21 @@ class SavePopUpController {
 }
 
 class SaveMarkdownController {
-  constructor($mdDialog, $stateParams) {
+  constructor($mdDialog) {
     this.$mdDialog = $mdDialog;
-    this.$stateParams = $stateParams;
   }
   saveBtn() {
     this.$mdDialog.show({
       templateUrl: 'components/editor/save/save.popup.html',
-      locals: { name: this.$stateParams.name, path: this.$stateParams.path },
+      locals: { name: this.markdownName, path: this.markdownPath },
       controller: SavePopUpController,
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
-      if (this.$stateParams.id === '0') {
+      if (this.markdownId === '0') {
         this.onSave({ id: '0', name: res.name, path: res.path });
       } else {
-        this.onSave({ id: this.$stateParams.id, name: res.name, oldName: this.$stateParams.name, path: res.path, oldPath: this.$stateParams.path });
+        this.onSave({ id: this.markdownId, name: res.name, oldName: this.markdownName, path: res.path, oldPath: this.markdownPath });
       }
     }, () => {
       console.log('Canceled save');
@@ -42,6 +41,9 @@ angular.module('UserGuideApp')
       controller: SaveMarkdownController,
       templateUrl: 'components/editor/save/save.view.html',
       bindings: {
-        onSave: '&'
+        onSave: '&',
+        markdownId: '<',
+        markdownName: '<',
+        markdownPath: '<'
       }
     });
