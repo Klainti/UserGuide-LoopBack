@@ -10,7 +10,7 @@ class EditorController {
     this.ngConfig = ngConfig;
   }
   $onInit() {
-    this.markdown = this.markdownDetails.data;
+    this.markdown = this.markdownData;
   }
   goBackBtn(){
     this.$state.go(this.ngConfig.prefix, {id: this.ngConfig.initID});
@@ -70,10 +70,13 @@ class EditorController {
             // we already created/moved the markdown to a new path (or created a new one on the same folder with another name), so delete the previous markdown
             this.Markdown.deleteById({ id }, () => {
               console.log(`Deleted MD with id ${id}`);
+              this.$state.go('editor', { id: res.id, name, path });
               this.onEditorSave(saveInfo);
             });
+          } else {
+            this.$state.go('editor', {id, name, path});
+            this.onEditorSave(saveInfo);
           }
-          this.onEditorSave(saveInfo);
         })
         .catch((error) => {
           console.log('catch error');
@@ -88,7 +91,7 @@ angular.module('UserGuideApp')
     controller: ['$state', '$stateParams', '$mdDialog', '$q', 'Markdown', 'ngConfig', EditorController],
     templateUrl: 'components/editor/editor.view.html',
     bindings: {
-      markdownDetails: '<', // resolved data
+      markdownData: '<', // resolved data
       onEditorSave: '&'
     }
   });
