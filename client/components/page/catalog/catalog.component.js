@@ -7,14 +7,6 @@ class CatalogController {
     this.Folder = Folder;
     this.Markdown = Markdown;
   }
-  $onInit() {
-    this.newFileId = '';
-    this.fileCommand = '';
-    this.Folder.getContent({ path: '/'}, (res) => {
-      this.catalogPath = '/';
-      this.catalogList = res.list;
-    });
-  }
   pathSubmit() {
     this.Folder.getContent({ path: this.catalogPath }, (res) => {
       this.catalogList = res.list;
