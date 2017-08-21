@@ -13,10 +13,11 @@ class ShowPopUpController {
       console.log(error.message);
     });
   }
-  deleteBtn(picture) {
-    const index = this.pictures.indexOf(picture);
-    this.pictures.splice(index, 1);
-    this.Picture.deleteById({ id: picture.id });
+  deleteBtn(id) {
+    this.pictures = this.pictures.filter((item) =>{
+      return item.id !== id;
+    });
+    this.Picture.deleteById({ id });
   }
   insertBtn(id) {
     this.$mdDialog.hide({ id });

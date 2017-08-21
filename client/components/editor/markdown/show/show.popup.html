@@ -7,7 +7,7 @@
     </md-input-container><br>
     <md-list>
       <md-list-item layout="row" ng-repeat="picture in ctrl.pictures | filter:search">
-        <p flex>{{picture.name}}</p>
+        <p>{{picture.name}}</p>
         <img flex ng-src="http://localhost:3000/api/Pictures/{{picture.id}}" alt="Empty" height="150" width="150"/>
         <div layout="column" flex>
           <md-button class="md-primary" ng-click="ctrl.insertBtn(picture.id)">
