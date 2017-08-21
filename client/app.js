@@ -2,21 +2,26 @@
 
 const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages', 'lbServices']);
 
-UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
+UserGuideApp.constant('ngConfig' ,{
+  'prefix': 'guide',
+  'initID': '59944d89925bec7138ef580f'
+});
+
+UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngConfig) => {
   $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise('/guide/59944d89925bec7138ef580f');
+  $urlRouterProvider.otherwise(`/${ngConfig.prefix}/${ngConfig.initID}`);
 
   $stateProvider
-      .state('guide', {
-        url: '/guide/:id', // TODO /prefix/:id
+      .state(ngConfig.prefix, {
+        url: `/${ngConfig.prefix}/:id`,
         component: 'guideComponent',
         params: {
           id: null
         },
         resolve: {
           pageData: ($stateParams, Markdown) => {
-            return Markdown.getHtml({ id: $stateParams.id })
-              .$promise.then(res => res.html);
+            return Markdown.getHtml({ id: $stateParams.id }).$promise
+              .then(res => res.html);
           }
         }
       })
@@ -29,13 +34,13 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
           path: null
         },
         resolve: {
-          markdownData: ($stateParams, Markdown) => {
+          markdownDetails: ($stateParams, Markdown) => {
             if ($stateParams.id === '0') {
               return '';
             }
-            return Markdown.findById({ id: $stateParams.id })
-                .$promise.then(res => res.data);
-          }
+            return Markdown.findById({ id: $stateParams.id }).$promise;
+          },
         }
       });
 });
+
