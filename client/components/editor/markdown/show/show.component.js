@@ -13,11 +13,21 @@ class ShowPopUpController {
       console.log(error.message);
     });
   }
-  deleteBtn(id) {
-    this.pictures = this.pictures.filter((item) =>{
-      return item.id !== id;
+  deleteBtn(id, name) {
+    this.$mdDialog.show(
+      this.$mdDialog.confirm()
+        .title(`Are you sure you want to delete ${name} ?`)
+        .ok('Ok')
+        .cancel('Cancel')
+    ).then(() => {
+      this.pictures = this.pictures.filter((item) =>{
+        return item.id !== id;
+      });
+      this.Picture.deleteById({ id });
+      console.log(`Deleted Picture with id ${id}`);
+    }, () => {
+      console.log('Canceled delete');
     });
-    this.Picture.deleteById({ id });
   }
   insertBtn(id) {
     this.$mdDialog.hide({ id });
