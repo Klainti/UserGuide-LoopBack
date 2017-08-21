@@ -4,7 +4,7 @@ const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 
 
 UserGuideApp.constant('ngConfig' ,{
   'prefix': 'guide',
-  'initID': '59944d89925bec7138ef580f'
+  'initID': '599a9f78258fa830f747f5c3'
 });
 
 UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngConfig) => {
@@ -34,11 +34,12 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngCo
           path: null
         },
         resolve: {
-          markdownDetails: ($stateParams, Markdown) => {
+          markdownData: ($stateParams, Markdown) => {
             if ($stateParams.id === '0') {
               return '';
             }
-            return Markdown.findById({ id: $stateParams.id }).$promise;
+            return Markdown.findById({ id: $stateParams.id }).$promise
+              .then(res => res.data);
           },
         }
       });
