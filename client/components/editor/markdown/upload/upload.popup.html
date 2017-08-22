@@ -1,19 +1,48 @@
-<div layout="column" layout-align="center center"
-     style="background-color: #f2f2f2" class="md-padding">
-    <md-input-container>
-        <label>Picture Url</label>
-        <input ng-model="ctrl.picURL">
-    </md-input-container>
-    <md-input-container>
-        <label>Picture Name</label>
-        <input ng-model="ctrl.picName">
-    </md-input-container>
-  <md-dialog-actions>
-    <md-button class="md-primary" ng-click="ctrl.ok()" >
-        OK
-    </md-button>
-    <md-button class="md-primary" ng-click="ctrl.cancel()">
-        Cancel
-    </md-button>
-  </md-dialog-actions>
-</div>
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab label="local">
+    <md-content class="md-padding">
+      <form name="form">
+        <input type="file" ngf-select="" ng-model="ctrl.picFile" name="file" required="">
+        <button ng-disabled="!form.$valid" ng-click="ctrl.submit(ctrl.picFile)">submit</button>
+        <span class="progress" ng-show="ctrl.picFile.progress >= 0">
+          <div style="width:{{ctrl.picFile.progress}}%" ng-bind="ctrl.picFile.progress + '%'" class="ng-binding"></div>
+        </span>
+        <span ng-show="picFile.result">Upload Successful</span>
+      </form>
+    </md-content>
+  </md-tab>
+  <md-tab label="web">
+    <md-content class="md-padding">
+      <div layout="column" layout-align="center center"
+           style="background-color: #f2f2f2" class="md-padding">
+        <md-input-container>
+          <form name="urlForm">
+            <label>Picture Url</label>
+            <input ng-model="ctrl.picURL" name="picURL" required />
+            <div ng-messages="urlForm.picURL.$error" role="alert">
+              <div ng-message="required">Please enter picture url</div>
+            </div>
+          </form>
+        </md-input-container>
+        <md-input-container>
+          <form name="nameForm">
+            <label>Picture Name</label>
+            <input ng-model="ctrl.picName" name="picName" required />
+            <div ng-messages="nameForm.picName.$error" role="alert">
+              <div ng-message="required">Please enter picture name</div>
+            </div>
+          </form>
+        </md-input-container>
+        <md-checkbox ng-model="ctrl.insertFlag" aria-label="insertCheckbox">
+          Insert To Editor
+        </md-checkbox>
+        <md-button class="md-primary" ng-click="ctrl.ok(ctrl.insertFlag, urlForm.picURL.$error, nameForm.picName.$error)">
+          OK
+        </md-button>
+        <md-button class="md-primary" ng-click="ctrl.cancel()">
+          Cancel
+        </md-button>
+      </div>
+    </md-content>
+  </md-tab>
+</md-tabs>
