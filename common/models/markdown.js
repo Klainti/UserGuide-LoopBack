@@ -22,31 +22,6 @@ module.exports = (Markdown) => {
     http: { path: '/preview', verb: 'get' }
   });
 
-  /* Convert the path of a markdown to link. Return /guide/{id of markdown} */
-  Markdown.getLink = (name, path, text, cb) => {
-    if (!PathValidation.test(path) && path !== '/') {
-      cb('Invalid Path', null);
-    } else {
-      Markdown.findOne({ where: { name, path } })
-        .then((result) => {
-          const link = `[${text}](/guide/${result.id})`;
-          cb(null, link);
-        })
-        .catch((error) => {
-          cb(error, null);
-        });
-    }
-  };
-
-  Markdown.remoteMethod('getLink', {
-    accepts: [{ arg: 'name', type: 'string' },
-      { arg: 'path', type: 'string' },
-      { arg: 'text', type: 'string' }],
-    returns: { arg: 'link', type: 'string' },
-    description: 'Convert markdown\'s path to link',
-    http: { path: '/getLink', verb: 'get' }
-  });
-
   /* Search for a markdown and convert it to HTML */
   Markdown.getHtml = (id, cb) => {
     Markdown.findOne({ where: { _id: id } })
@@ -89,6 +64,8 @@ module.exports = (Markdown) => {
       next();
     }
   });
+
+  /* Return empty {} if not found any markdown! Not Error 404 */
   Markdown.afterRemote('findOne', (ctx, modelInstance, next) => {
     if (modelInstance) {
       ctx.result = { modelInstance };
