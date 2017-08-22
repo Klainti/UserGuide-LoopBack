@@ -1,29 +1,27 @@
 'use strict';
 
-const config = require('../../server/config.json');
-
-const PathValidation = new RegExp(config.PathValidation, 'm');
 
 module.exports = (Folder) => {
   /* Search a folder by path and get its content */
-  Folder.getContent = (path, cb) => {
-    if (!PathValidation.test(path) && path !== '/') {
-      const error = new Error('Invalid Path');
-      error.status = 400;
-      cb(error, null);
-    } else {
-      Folder.app.FS.getTreeByPath(path)
+  Folder.getContent = (path) => {
+    const content = new Promise((resolve, reject) => {
+      Folder.app.utils.ValidPath(path)
+        .then(() => {
+          const children = Folder.app.FS.getTreeByPath(path);
+          return (children);
+        })
         .then((children) => {
           const list = Folder.app.utils.CreateList(children);
           return (list);
         })
         .then((list) => {
-          cb(null, list);
+          resolve(list);
         })
         .catch((error) => {
-          cb(error);
+          reject(error);
         });
-    }
+    });
+    return (content);
   };
 
   Folder.remoteMethod('getContent', {
