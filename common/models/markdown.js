@@ -7,12 +7,13 @@ const PathValidation = new RegExp(config.PathValidation, 'm');
 module.exports = (Markdown) => {
   /* Convert a markdown text to html! */
   Markdown.preview = (data, cb) => {
-    const result = Markdown.app.utils.ConvertToHtml(data);
-    if (result[0] === null) {
-      cb(null, result[1]);
-    } else {
-      cb(result[0], null);
-    }
+    Markdown.app.utils.ConvertToHtml(data)
+      .then((html) => {
+        cb(null, html);
+      })
+      .catch((error) => {
+        cb(error);
+      });
   };
 
   Markdown.remoteMethod('preview', {
@@ -26,15 +27,18 @@ module.exports = (Markdown) => {
   Markdown.getHtml = (id, cb) => {
     Markdown.findOne({ where: { _id: id } })
       .then((result) => {
-        const html = Markdown.app.utils.ConvertToHtml(result.data);
-        if (html[0] === null) {
-          cb(null, html[1]);
-        } else {
-          cb(html[0], null);
+        if (result !== null) {
+          return Markdown.app.utils.ConvertToHtml(result.data);
         }
+        const error = new Error('Not Found any markdown by this ID!');
+        error.status = 404;
+        return Promise.reject(error);
+      })
+      .then((html) => {
+        cb(null, html);
       })
       .catch((error) => {
-        cb(error, null);
+        cb(error);
       });
   };
 
@@ -51,16 +55,18 @@ module.exports = (Markdown) => {
       const error = new Error('Invalid Path');
       error.status = 400;
       next(error);
-    } else if (ctx.req.body.path !== '/') { // create folders!
-      const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-      Markdown.app.FS.saveFolder(Folders)
+    } else if (ctx.req.body.path !== '/') {
+      Markdown.app.FS.getFolderFromPath(ctx.req.body.path)
+        .then((folders) => {
+          Markdown.app.FS.saveFolder(folders);
+        })
         .then(() => {
           next();
         })
         .catch((error) => {
           next(error);
         });
-    } else {
+    } else { // no folders to create --> path === '/'
       next();
     }
   });

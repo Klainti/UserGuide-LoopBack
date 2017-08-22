@@ -15,10 +15,13 @@ module.exports = (Folder) => {
       Folder.app.FS.getTreeByPath(path)
         .then((children) => {
           const list = Folder.app.utils.CreateList(children);
+          return (list);
+        })
+        .then((list) => {
           cb(null, list);
         })
         .catch((error) => {
-          cb(error, null);
+          cb(error);
         });
     }
   };
@@ -41,6 +44,9 @@ module.exports = (Folder) => {
     Folder.app.FS.getTreeByPath(ChildrenPath)
       .then((children) => {
         const list = Folder.app.utils.CreateList(children);
+        return (list);
+      })
+      .then((list) => {
         ctx.result = { list, path: list[0].path };
         next();
       })
