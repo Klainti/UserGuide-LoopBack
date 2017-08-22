@@ -1,6 +1,6 @@
 'use strict';
 
-const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages', 'lbServices']);
+const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages', 'ngFileUpload', 'lbServices']);
 
 UserGuideApp.constant('ngConfig' ,{
   'prefix': 'guide',
