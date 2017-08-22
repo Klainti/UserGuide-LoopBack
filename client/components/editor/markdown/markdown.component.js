@@ -15,13 +15,8 @@ class MarkdownController {
   insertPicture(id) {
     this.markdown = MarkdownController.insertPictureToEditor(id, this.markdown);
   }
-  addLink(text, name, path) {
-    this.Markdown.getLink({ text, name, path }, (res) => {
-      console.log(res.link);
-      this.markdown = MarkdownController.addLinkToEditor(res.link, this.markdown);
-    }, (error) => {
-      console.log(error.message);
-    });
+  addLink(link) {
+    this.markdown = MarkdownController.addLinkToEditor(link, this.markdown);
   }
   static insertPictureToEditor(id, markdown) {
     const pictureLink = `![](/api/Pictures/${id})`;

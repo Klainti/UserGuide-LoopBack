@@ -1,11 +1,22 @@
 'use strict';
 
 class AddLinkPopUpController {
-  constructor($mdDialog) {
+  constructor($mdDialog, markdowns) {
     this.$mdDialog = $mdDialog;
+    this.$onInit(markdowns);
   }
-  ok() {
-    this.$mdDialog.hide({ text: this.text, name: this.name, path: this.path });
+  $onInit(markdowns) {
+    this.markdowns = markdowns.map((markdown) => {
+      if (markdown.path === '/') {
+        return {item: { path: `${markdown.path}${markdown.name}`, id: markdown.id }};
+      }
+      return {item: { path: `${markdown.path}/${markdown.name}`, id: markdown.id }};
+    });
+  }
+  ok(nameErr, markdownErr) {
+    if (!nameErr.required && !markdownErr.required) {
+      this.$mdDialog.hide({id: this.userSelect.id, linkName: this.linkName});
+    }
   }
   cancel() {
     this.$mdDialog.cancel();
@@ -13,19 +24,25 @@ class AddLinkPopUpController {
 }
 
 class AddLinkController {
-  constructor($mdDialog) {
+  constructor($mdDialog, Markdown, ngConfig) {
     this.$mdDialog = $mdDialog;
+    this.Markdown = Markdown;
+    this.ngConfig = ngConfig;
   }
   addLinkBtn() {
-    this.$mdDialog.show({
-      templateUrl: 'components/editor/markdown/link/link.popup.html',
-      controller: AddLinkPopUpController,
-      controllerAs: 'ctrl',
-      clickOutsideToClose: true
-    }).then((res) => {
-      this.onAddLink({ text: res.text, name: res.name, path: res.path });
-    }, () => {
-      console.log('Canceled addLink');
+    this.Markdown.find({ filter: { fields: { id: true, name: true, path: true }}}, (markdowns) => {
+      this.$mdDialog.show({
+        templateUrl: 'components/editor/markdown/link/link.popup.html',
+        controller: AddLinkPopUpController,
+        controllerAs: 'ctrl',
+        locals: { markdowns },
+        clickOutsideToClose: true
+      }).then((res) => {
+        const link = `[${res.linkName}](/${this.ngConfig.prefix}/${res.id})`;
+        this.onAddLink({ link });
+      }, () => {
+        console.log('Canceled addLink');
+      });
     });
   }
 }

@@ -1,24 +1,35 @@
 <div layout="column" layout-align="center center"
      style="background-color: #f2f2f2" class="md-padding">
-  <md-input-container>
-    <label>Link Text</label>
-    <input ng-model="ctrl.text">
-  </md-input-container>
-  <md-input-container>
-    <label>Name</label>
-    <input ng-model="ctrl.name">
-  </md-input-container>
-  <md-input-container>
-    <label>Path</label>
-    <input ng-model="ctrl.path">
-  </md-input-container>
-
+  <div layout="column">
+    <md-input-container>
+      <form name="nameForm">
+        <label>Link Name</label>
+        <input ng-model="ctrl.linkName" name="linkName" required />
+        <div ng-messages="nameForm.linkName.$error" role="alert">
+          <div ng-message="required">Please enter link name</div>
+        </div>
+      </form>
+    </md-input-container>
+    <md-input-container>
+      <form name="markdownForm">
+        <label>Markdown</label>
+        <md-select ng-model="ctrl.userSelect" name="markdown" ng-required="true">
+          <md-option ng-repeat="markdown in ctrl.markdowns" ng-value="markdown.item">
+            {{markdown.item.path}}
+          </md-option>
+        </md-select>
+        <div ng-messages="markdownForm.markdown.$error" role="alert">
+          <div ng-message="required">Please select a markdown</div>
+        </div>
+      </form>
+    </md-input-container>
+  </div>
   <md-dialog-actions>
-    <md-button class="md-primary" ng-click="ctrl.ok()" >
-        OK
+    <md-button class="md-primary" ng-click="ctrl.ok(nameForm.linkName.$error, markdownForm.markdown.$error)" >
+      OK
     </md-button>
     <md-button class="md-primary" ng-click="ctrl.cancel()">
-        Cancel
+      Cancel
     </md-button>
   </md-dialog-actions>
 </div>
