@@ -8,7 +8,7 @@ module.exports = (Picture) => {
     const image = new Promise((resolve, reject) => {
       request(url, { encoding: 'binary' }) // download image
         .then((data) => {
-          const buffer = new Buffer(data, 'binary');
+          const buffer = Buffer.from(data, 'binary');
           return Picture.create({ data: buffer, name }); // save it to db!
         })
         .then(() => {
@@ -29,14 +29,17 @@ module.exports = (Picture) => {
   });
   /* Convert base64 image to binary! */
   Picture.beforeRemote('create', (ctx, modelInstance, next) => {
-    const data = new Buffer(ctx.req.body.data, 'base64').toString('binary');
-    ctx.req.body.data = new Buffer(data, 'binary');
+    const base64 = ctx.req.body.data.substring(ctx.req.body.data.indexOf(','));
+    const type = ctx.req.body.data.substring(ctx.req.body.data.indexOf(':') + 1, ctx.req.body.data.indexOf(';'));
+    const data = Buffer.from(base64, 'base64').toString('binary');
+    ctx.req.body.data = Buffer.from(data, 'binary');
+    ctx.req.body.type = type;
     next();
   });
 
   /* Add content type to an image (png/image)! */
   Picture.afterRemote('findById', (ctx, modelInstance) => {
-    ctx.res.setHeader('content-type', 'image/png');
+    ctx.res.setHeader('content-type', modelInstance.type);
     ctx.res.end(modelInstance.data);
   });
 };
