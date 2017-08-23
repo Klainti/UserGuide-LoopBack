@@ -1,10 +1,12 @@
 'use strict';
 
 class UploadPopUpController {
-  constructor($mdDialog, Picture, Upload) {
+  constructor($mdDialog, $q, Picture, Upload) {
     this.$mdDialog = $mdDialog;
+    this.$q = $q;
     this.Picture = Picture;
     this.Upload = Upload;
+    this.isDone = false;
     this.insertFlag = true;
   }
   ok(insertFlag, urlErr, nameErr) {
@@ -16,12 +18,19 @@ class UploadPopUpController {
     this.$mdDialog.cancel();
   }
   submit() {
-    this.Upload.base64DataUrl(this.images).then((imagesBase64) => {
-      console.log(imagesBase64);
-      for(let i=0; i < imagesBase64.length; i++) {
-        this.Picture.create({name: this.images[i].name, data: imagesBase64[i]});
-      }
-    });
+    this.isDone = false;
+    this.Upload.base64DataUrl(this.images)
+      .then((imagesBase64) => {
+        let promises = [];
+        for(let i=0; i > imagesBase64.length; i++) {
+          let promise = this.Picture.create({name: this.images[i].name, data: imagesBase64[i]}).$promise;
+          promises.push(promise);
+        }
+        return this.$q.all(promises);
+       })
+      .then(() => {
+        this.isDone = true;
+      })
   }
 }
 
