@@ -29,14 +29,17 @@ module.exports = (Picture) => {
   });
   /* Convert base64 image to binary! */
   Picture.beforeRemote('create', (ctx, modelInstance, next) => {
-    const data = Buffer.from(ctx.req.body.data, 'base64').toString('binary');
+    const base64 = ctx.req.body.data.substring(ctx.req.body.data.indexOf(','));
+    const type = ctx.req.body.data.substring(ctx.req.body.data.indexOf(':') + 1, ctx.req.body.data.indexOf(';'));
+    const data = Buffer.from(base64, 'base64').toString('binary');
     ctx.req.body.data = Buffer.from(data, 'binary');
+    ctx.req.body.type = type;
     next();
   });
 
   /* Add content type to an image (png/image)! */
   Picture.afterRemote('findById', (ctx, modelInstance) => {
-    ctx.res.setHeader('content-type', 'image/png');
+    ctx.res.setHeader('content-type', modelInstance.type);
     ctx.res.end(modelInstance.data);
   });
 };
