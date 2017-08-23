@@ -13,10 +13,6 @@
     "data": {
       "type": "buffer",
       "required": true
-    },
-    "url": {
-      "type": "string",
-      "required": true
     }
   },
   "validations": [],
