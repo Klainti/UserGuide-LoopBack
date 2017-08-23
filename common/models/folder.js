@@ -1,16 +1,27 @@
 'use strict';
 
+
 module.exports = (Folder) => {
   /* Search a folder by path and get its content */
-  Folder.getContent = (path, cb) => {
-    Folder.app.FS.getTreeByPath(path)
-      .then((children) => {
-        const list = Folder.app.utils.CreateList(children);
-        cb(null, list);
-      })
-      .catch((error) => {
-        cb(error, null);
-      });
+  Folder.getContent = (path) => {
+    const content = new Promise((resolve, reject) => {
+      Folder.app.utils.ValidPath(path)
+        .then(() => {
+          const children = Folder.app.FS.getTreeByPath(path);
+          return (children);
+        })
+        .then((children) => {
+          const list = Folder.app.utils.CreateList(children);
+          return (list);
+        })
+        .then((list) => {
+          resolve(list);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+    return (content);
   };
 
   Folder.remoteMethod('getContent', {
@@ -31,6 +42,9 @@ module.exports = (Folder) => {
     Folder.app.FS.getTreeByPath(ChildrenPath)
       .then((children) => {
         const list = Folder.app.utils.CreateList(children);
+        return (list);
+      })
+      .then((list) => {
         ctx.result = { list, path: list[0].path };
         next();
       })

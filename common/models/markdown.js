@@ -1,18 +1,19 @@
 'use strict';
 
-const config = require('../../server/config.json');
-
-const PathValidation = new RegExp(config.PathValidation, 'm');
 
 module.exports = (Markdown) => {
   /* Convert a markdown text to html! */
-  Markdown.preview = (data, cb) => {
-    const result = Markdown.app.utils.ConvertToHtml(data);
-    if (result[0] === null) {
-      cb(null, result[1]);
-    } else {
-      cb(result[0], null);
-    }
+  Markdown.preview = (data) => {
+    const convertedHtml = new Promise((resolve, reject) => {
+      Markdown.app.utils.ConvertToHtml(data)
+        .then((html) => {
+          resolve(html);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+    return (convertedHtml);
   };
 
   Markdown.remoteMethod('preview', {
@@ -22,45 +23,27 @@ module.exports = (Markdown) => {
     http: { path: '/preview', verb: 'get' }
   });
 
-  /* Convert the path of a markdown to link. Return /guide/{id of markdown} */
-  Markdown.getLink = (name, path, text, cb) => {
-    if (!PathValidation.test(path) && path !== '/') {
-      cb('Invalid Path', null);
-    } else {
-      Markdown.findOne({ where: { name, path } })
+  /* Search for a markdown and convert it to HTML */
+  Markdown.getHtml = (id) => {
+    const page = new Promise((resolve, reject) => {
+      Markdown.findOne({ where: { _id: id } })
         .then((result) => {
-          const link = `[${text}](/guide/${result.id})`;
-          cb(null, link);
+          if (result !== null) {
+            const convertedHtml = Markdown.app.utils.ConvertToHtml(result.data);
+            return (convertedHtml);
+          }
+          const error = new Error('Not Found any markdown by this ID!');
+          error.status = 404;
+          return Promise.reject(error);
+        })
+        .then((html) => {
+          resolve(html);
         })
         .catch((error) => {
-          cb(error, null);
+          reject(error);
         });
-    }
-  };
-
-  Markdown.remoteMethod('getLink', {
-    accepts: [{ arg: 'name', type: 'string' },
-      { arg: 'path', type: 'string' },
-      { arg: 'text', type: 'string' }],
-    returns: { arg: 'link', type: 'string' },
-    description: 'Convert markdown\'s path to link',
-    http: { path: '/getLink', verb: 'get' }
-  });
-
-  /* Search for a markdown and convert it to HTML */
-  Markdown.getHtml = (id, cb) => {
-    Markdown.findOne({ where: { _id: id } })
-      .then((result) => {
-        const html = Markdown.app.utils.ConvertToHtml(result.data);
-        if (html[0] === null) {
-          cb(null, html[1]);
-        } else {
-          cb(html[0], null);
-        }
-      })
-      .catch((error) => {
-        cb(error, null);
-      });
+    });
+    return (page);
   };
 
   Markdown.remoteMethod('getHtml', {
@@ -72,23 +55,29 @@ module.exports = (Markdown) => {
 
   /* Create folders */
   Markdown.beforeRemote('create', (ctx, modelInstance, next) => {
-    if (!PathValidation.test(ctx.req.body.path) && ctx.req.body.path !== '/') {
-      const error = new Error('Invalid Path');
-      error.status = 400;
-      next(error);
-    } else if (ctx.req.body.path !== '/') { // create folders!
-      const Folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-      Markdown.app.FS.saveFolder(Folders)
-        .then(() => {
-          next();
-        })
-        .catch((error) => {
-          next(error);
-        });
-    } else {
-      next();
-    }
+    Markdown.app.utils.ValidPath(ctx.req.body.path)
+      .then(() => {
+        if (ctx.req.body.path === '/') { // not need to take folders, is root!
+          return Promise.resolve();
+        }
+        const folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
+        return (folders);
+      })
+      .then((folders) => {
+        if (folders) {
+          return Markdown.app.FS.saveFolder(folders);
+        }
+        return Promise.resolve(); // no need to save folders, is root!
+      })
+      .then(() => {
+        next();
+      })
+      .catch((error) => {
+        next(error);
+      });
   });
+
+  /* Return empty {} if not found any markdown! Not Error 404 */
   Markdown.afterRemote('findOne', (ctx, modelInstance, next) => {
     if (modelInstance) {
       ctx.result = { modelInstance };

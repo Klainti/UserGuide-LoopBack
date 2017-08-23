@@ -1,8 +1,9 @@
 'use strict';
 
 class UploadPopUpController {
-  constructor($mdDialog, Upload) {
+  constructor($mdDialog, Picture, Upload) {
     this.$mdDialog = $mdDialog;
+    this.Picture = Picture;
     this.Upload = Upload;
     this.insertFlag = true;
   }
@@ -16,18 +17,36 @@ class UploadPopUpController {
   }
   submit() {
     console.log('SUBMIT LOCAL');
-    console.log(this.picFile);
-    this.Upload.upload({
-      url: '/Pictures',
-      data: { file: this.picFile }
+    console.log(this.image);
+    console.log(this.Upload.json(this.image));
+    this.Upload.base64DataUrl(this.image)
+      .then((data) => {
+        this.Picture.create({ name: 'example', data }, (res) => {
+          console.log(res);
+        }, (err) => {
+          console.log(err);
+        });
+      });
+    /*
+    this.Upload.http({
+      url: 'http://localhost:3000/api/Pictures',
+      headers : {
+        'Content-Type': this.image.type
+      },
+      data: this.image,
+      name: 'example'
     }).then(function (resp) {
-      console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-    }, function (resp) {
-      console.log('Error status: ' + resp.status);
+      console.log('resp' + resp);
+      //console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+    }, function (err) {
+      console.log('err' + err);
+      //console.log('Error status: ' + resp.status);
     }, function (evt) {
-      var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-      console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+      console.log('evt' + evt);
+      //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+      //console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
     });
+    */
   }
 }
 
