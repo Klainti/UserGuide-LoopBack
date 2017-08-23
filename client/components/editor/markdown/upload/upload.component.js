@@ -16,37 +16,10 @@ class UploadPopUpController {
     this.$mdDialog.cancel();
   }
   submit() {
-    console.log('SUBMIT LOCAL');
     console.log(this.image);
-    console.log(this.Upload.json(this.image));
-    this.Upload.base64DataUrl(this.image)
-      .then((data) => {
-        this.Picture.create({ name: 'example', data }, (res) => {
-          console.log(res);
-        }, (err) => {
-          console.log(err);
-        });
-      });
-    /*
-    this.Upload.http({
-      url: 'http://localhost:3000/api/Pictures',
-      headers : {
-        'Content-Type': this.image.type
-      },
-      data: this.image,
-      name: 'example'
-    }).then(function (resp) {
-      console.log('resp' + resp);
-      //console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-    }, function (err) {
-      console.log('err' + err);
-      //console.log('Error status: ' + resp.status);
-    }, function (evt) {
-      console.log('evt' + evt);
-      //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-      //console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+    this.Upload.base64DataUrl(this.image).then((imagesBase64) => {
+      this.Picture.create({ name: this.image.name, data: imagesBase64[1] });
     });
-    */
   }
 }
 
@@ -62,7 +35,7 @@ class UploadController {
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
-      this.Picture.create({ name: res.picName, url: res.picURL }, (data) => {
+      this.Picture.download({ name: res.picName, url: res.picURL }, (data) => {
         if (res.insertFlag) {
           this.onInsertPicture({id: data.id});
         }
