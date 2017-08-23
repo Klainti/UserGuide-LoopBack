@@ -8,7 +8,7 @@ module.exports = (Picture) => {
     const image = new Promise((resolve, reject) => {
       request(url, { encoding: 'binary' }) // download image
         .then((data) => {
-          const buffer = new Buffer(data, 'binary');
+          const buffer = Buffer.from(data, 'binary');
           return Picture.create({ data: buffer, name }); // save it to db!
         })
         .then(() => {
@@ -29,8 +29,8 @@ module.exports = (Picture) => {
   });
   /* Convert base64 image to binary! */
   Picture.beforeRemote('create', (ctx, modelInstance, next) => {
-    const data = new Buffer(ctx.req.body.data, 'base64').toString('binary');
-    ctx.req.body.data = new Buffer(data, 'binary');
+    const data = Buffer.from(ctx.req.body.data, 'base64').toString('binary');
+    ctx.req.body.data = Buffer.from(data, 'binary');
     next();
   });
 
