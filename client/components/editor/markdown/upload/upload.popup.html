@@ -6,13 +6,8 @@
              ngf-accept="'image/*'" ngf-max-size="20MB" class="md-raised md-primary">Select Image
         </md-button>
         <md-button ng-disabled="!form.$valid" ng-click="ctrl.submit(ctrl.images)">submit</md-button>
-        <span class="progress" ng-show="ctrl.images.progress >= 0">
-          <div style="width:{{ctrl.images.progress}}%" ng-bind="ctrl.images.progress + '%'" class="ng-binding"></div>
-        </span>
-        <span ng-show="images.result">Upload Successful</span>
-        <div class="preview">
-          <div>Preview image:</div>
-          <img ngf-src="ctrl.image">
+        <div ng-show="ctrl.isDone">
+          <p>Upload successfully</p>
         </div>
       </form>
     </md-content>
