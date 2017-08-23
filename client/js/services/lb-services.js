@@ -2114,6 +2114,43 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
               url: urlBase + "/Pictures/change-stream",
               method: "POST",
             },
+
+            /**
+             * @ngdoc method
+             * @name lbServices.Picture#download
+             * @methodOf lbServices.Picture
+             *
+             * @description
+             *
+             * Download image from given url
+             *
+             * @param {Object=} parameters Request parameters.
+             *
+             *   This method does not accept any parameters.
+             *   Supply an empty object or omit this argument altogether.
+             *
+             * @param {Object} postData Request data.
+             *
+             *  - `url` – `{string=}` -
+             *
+             *  - `name` – `{string=}` -
+             *
+             * @param {function(Object,Object)=} successCb
+             *   Success callback with two arguments: `value`, `responseHeaders`.
+             *
+             * @param {function(Object)=} errorCb Error callback with one argument:
+             *   `httpResponse`.
+             *
+             * @returns {Object} An empty reference that will be
+             *   populated with the actual data once the response is returned
+             *   from the server.
+             *
+             * This method returns no data.
+             */
+            "download": {
+              url: urlBase + "/Pictures/download",
+              method: "POST",
+            },
           }
         );
 
@@ -3013,42 +3050,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
              */
             "getHtml": {
               url: urlBase + "/Markdowns/:id/preview",
-              method: "GET",
-            },
-
-            /**
-             * @ngdoc method
-             * @name lbServices.Markdown#getLink
-             * @methodOf lbServices.Markdown
-             *
-             * @description
-             *
-             * Convert markdown's path to link
-             *
-             * @param {Object=} parameters Request parameters.
-             *
-             *  - `name` – `{string=}` -
-             *
-             *  - `path` – `{string=}` -
-             *
-             *  - `text` – `{string=}` -
-             *
-             * @param {function(Object,Object)=} successCb
-             *   Success callback with two arguments: `value`, `responseHeaders`.
-             *
-             * @param {function(Object)=} errorCb Error callback with one argument:
-             *   `httpResponse`.
-             *
-             * @returns {Object} An empty reference that will be
-             *   populated with the actual data once the response is returned
-             *   from the server.
-             *
-             * Data properties:
-             *
-             *  - `link` – `{string=}` -
-             */
-            "getLink": {
-              url: urlBase + "/Markdowns/getLink",
               method: "GET",
             },
           }
