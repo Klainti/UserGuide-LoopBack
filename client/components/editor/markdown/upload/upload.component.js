@@ -16,9 +16,11 @@ class UploadPopUpController {
     this.$mdDialog.cancel();
   }
   submit() {
-    console.log(this.image);
-    this.Upload.base64DataUrl(this.image).then((imagesBase64) => {
-      this.Picture.create({ name: this.image.name, data: imagesBase64[1] });
+    this.Upload.base64DataUrl(this.images).then((imagesBase64) => {
+      console.log(imagesBase64);
+      for(let i=0; i < imagesBase64.length; i++) {
+        this.Picture.create({name: this.images[i].name, data: imagesBase64[i]});
+      }
     });
   }
 }
