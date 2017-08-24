@@ -1,0 +1,62 @@
+<md-tabs md-dynamic-height md-border-bottom>
+  <md-tab label="link">
+    <md-content class="md-padding">
+      <div layout="column" layout-align="center center"
+           style="background-color: #f2f2f2" class="md-padding">
+        <div layout="column">
+          <md-input-container>
+            <form name="nameForm">
+              <label>Link Name</label>
+              <input ng-model="ctrl.linkName" name="linkName" required />
+              <div ng-messages="nameForm.linkName.$error" role="alert">
+                <div ng-message="required">Please enter link name</div>
+              </div>
+            </form>
+          </md-input-container>
+          <md-input-container>
+            <form name="markdownForm">
+              <label>Markdown</label>
+              <md-select ng-model="ctrl.userSelect" name="markdown" ng-required="true">
+                <md-option ng-repeat="markdown in ctrl.markdowns" ng-value="markdown.item">
+                  {{markdown.item.path}}
+                </md-option>
+              </md-select>
+              <div ng-messages="markdownForm.markdown.$error" role="alert">
+                <div ng-message="required">Please select a markdown</div>
+              </div>
+            </form>
+          </md-input-container>
+        </div>
+        <md-dialog-actions>
+          <md-button class="md-primary" ng-click="ctrl.ok(nameForm.linkName.$error, markdownForm.markdown.$error)" >
+            OK
+          </md-button>
+          <md-button class="md-primary" ng-click="ctrl.cancel()">
+            Cancel
+          </md-button>
+        </md-dialog-actions>
+      </div>
+    </md-content>
+  </md-tab>
+  <md-tab label="picture">
+    <md-content class="md-padding">
+      <div layout="column" layout-align="center center"
+           style="background-color: #f2f2f2" class="md-padding">
+        <div layout="row" ng-repeat="picture in ctrl.pictures | filter:search">
+          <div flex="25" layout="column" layout-align="center center">
+            <p><b>{{picture.name}}</b></p>
+            <md-button class="md-primary" ng-click="ctrl.insertBtn(picture.id)">
+              Insert
+            </md-button>
+            <md-button class="md-primary" ng-click="ctrl.deleteBtn(picture.id, picture.name)">
+              Delete
+            </md-button>
+          </div>
+          <div flex="75">
+            <img ng-src="http://localhost:3000/api/Pictures/{{picture.id}}" alt="Empty" height="300" width="300"/>
+          </div>
+        </div>
+      </div>
+    </md-content>
+  </md-tab>
+</md-tabs>
