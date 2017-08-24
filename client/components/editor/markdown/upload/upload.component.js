@@ -9,6 +9,7 @@ class UploadPopUpController {
     this.isDone = false;
     this.insertWebFlag = true;
     this.insertLocalFlag = true;
+    this.images = [];
   }
   ok(urlErr, nameErr) {
     if (!urlErr.required && !nameErr.required) {
@@ -19,7 +20,6 @@ class UploadPopUpController {
     this.$mdDialog.cancel();
   }
   submit() {
-    console.log(this.images);
     this.isDone = false;
     this.Upload.base64DataUrl(this.images)
       .then((imagesBase64) => {

@@ -19,7 +19,7 @@
               </li>
             </ul>
           </div>
-          <md-checkbox ng-disabled="ctrl.images.length > 1" ng-model="ctrl.insertLocalFlag" aria-label="insertCheckbox">
+          <md-checkbox ng-disabled="ctrl.images.length > 1" ng-model="ctrl.insertLocalFlag" ng-checked="ctrl.images.length < 2" aria-label="insertCheckbox">
             Insert To Editor
           </md-checkbox>
         </div>
