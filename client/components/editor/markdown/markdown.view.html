@@ -1,10 +1,8 @@
-
 <div>
     <md-button ng-click="$ctrl.editBtn()" class="md-raised md-primary">Edit</md-button>
     <md-button ng-click="$ctrl.previewBtn()" class="md-raised md-primary">Preview</md-button>
-    <add-link on-add-link="$ctrl.addLink(link)"></add-link>
+    <insert-to-editor on-insert-link="$ctrl.addLink(link)" on-insert-picture="$ctrl.insertPicture(id)"></insert-to-editor>
     <upload-picture on-insert-picture="$ctrl.insertPicture(id)"></upload-picture>
-    <show-pictures on-insert-picture="$ctrl.insertPicture(id)"></show-pictures>
 </div>
 
 <div ng-if="$ctrl.editing">
