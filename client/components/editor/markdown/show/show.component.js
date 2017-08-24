@@ -1,4 +1,5 @@
 'use strict';
+
 // TODO change show name, popUp view
 class ShowPopUpController {
   constructor($mdDialog, Picture) {
@@ -7,7 +8,7 @@ class ShowPopUpController {
     this.$onInit();
   }
   $onInit() {
-    this.Picture.find({ filter: { fields: {'name': true, 'id': true } } }, (res) => {
+    this.Picture.find({ filter: { fields: { name: true, id: true } } }, (res) => {
       this.pictures = res;
     }, (error) => {
       console.log(error.message);
@@ -20,7 +21,7 @@ class ShowPopUpController {
         .ok('Ok')
         .cancel('Cancel')
     ).then(() => {
-      this.pictures = this.pictures.filter((item) =>{
+      this.pictures = this.pictures.filter((item) => {
         return item.id !== id;
       });
       this.Picture.deleteById({ id });
