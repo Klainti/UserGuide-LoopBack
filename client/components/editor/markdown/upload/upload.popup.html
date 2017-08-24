@@ -1,15 +1,35 @@
 <md-tabs md-dynamic-height md-border-bottom>
   <md-tab label="local">
     <md-content class="md-padding">
-      <form name="form">
-        <md-button ngf-select ng-model="ctrl.images" name="images" ngf-multiple="true" ngf-pattern="'image/*'"
-             ngf-accept="'image/*'" ngf-max-size="20MB" class="md-raised md-primary">Select Image
-        </md-button>
-        <md-button ng-disabled="!form.$valid" ng-click="ctrl.submit(ctrl.images)">submit</md-button>
-        <div ng-show="ctrl.isDone">
-          <p>Upload successfully</p>
+      <div layout="column" layout-align="center center"
+           style="background-color: #f2f2f2" class="md-padding">
+        <form name="form">
+          <md-button ngf-select ng-model="ctrl.images" name="images" ngf-multiple="true" ngf-pattern="'image/*'"
+               ngf-accept="'image/*'" ngf-max-size="20MB" class="md-raised">Select Picture(s)
+          </md-button>
+        </form>
+        <div layout="column">
+          <div ng-repeat="image in ctrl.images">
+            <ul>
+              <li>
+                {{image.name}}
+                <md-button ng-click="ctrl.deleteImage(image.name)" class="md-icon md-mini">
+                  <md-icon md-font-icon="classname">delete</md-icon>
+                </md-button>
+              </li>
+            </ul>
+          </div>
+          <md-checkbox ng-disabled="ctrl.images.length > 1" ng-model="ctrl.insertLocalFlag" aria-label="insertCheckbox">
+            Insert To Editor
+          </md-checkbox>
         </div>
-      </form>
+        <md-dialog-actions>
+          <md-button ng-disabled="ctrl.images === undefined" ng-click="ctrl.submit()" class="md-raised md-primary">submit</md-button>
+          <div ng-show="ctrl.isDone">
+            <p>Upload successfully</p>
+          </div>
+        </md-dialog-actions>
+      </div>
     </md-content>
   </md-tab>
   <md-tab label="web">
@@ -34,10 +54,10 @@
             </div>
           </form>
         </md-input-container>
-        <md-checkbox ng-model="ctrl.insertFlag" aria-label="insertCheckbox">
+        <md-checkbox ng-model="ctrl.insertWebFlag" aria-label="insertCheckbox">
           Insert To Editor
         </md-checkbox>
-        <md-button class="md-primary" ng-click="ctrl.ok(ctrl.insertFlag, urlForm.picURL.$error, nameForm.picName.$error)">
+        <md-button class="md-primary" ng-click="ctrl.ok(urlForm.picURL.$error, nameForm.picName.$error)">
           OK
         </md-button>
         <md-button class="md-primary" ng-click="ctrl.cancel()">

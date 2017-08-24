@@ -7,30 +7,41 @@ class UploadPopUpController {
     this.Picture = Picture;
     this.Upload = Upload;
     this.isDone = false;
-    this.insertFlag = true;
+    this.insertWebFlag = true;
+    this.insertLocalFlag = true;
   }
-  ok(insertFlag, urlErr, nameErr) {
+  ok(urlErr, nameErr) {
     if (!urlErr.required && !nameErr.required) {
-      this.$mdDialog.hide({picURL: this.picURL, picName: this.picName, insertFlag});
+      this.$mdDialog.hide({ picURL: this.picURL, picName: this.picName, insertFlag: this.insertWebFlag, command: 'web' });
     }
   }
   cancel() {
     this.$mdDialog.cancel();
   }
   submit() {
+    console.log(this.images);
     this.isDone = false;
     this.Upload.base64DataUrl(this.images)
       .then((imagesBase64) => {
-        let promises = [];
-        for(let i=0; i > imagesBase64.length; i++) {
-          let promise = this.Picture.create({name: this.images[i].name, data: imagesBase64[i]}).$promise;
+        const promises = [];
+        for (let i = 0; i < imagesBase64.length; i++) {
+          const promise = this.Picture.create({ name: this.images[i].name, data: imagesBase64[i] }).$promise;
           promises.push(promise);
         }
         return this.$q.all(promises);
-       })
-      .then(() => {
-        this.isDone = true;
       })
+      .then((images) => {
+        this.isDone = true;
+        this.$mdDialog.hide({ id: images[0].id, insertFlag: this.insertLocalFlag, command: 'local' });
+      });
+  }
+  deleteImage(name) {
+    for (let i = 0; i < this.images.length; i++) {
+      if (this.images[i].name === name) {
+        this.images.splice(i, 1);
+        return;
+      }
+    }
   }
 }
 
@@ -46,13 +57,19 @@ class UploadController {
       controllerAs: 'ctrl',
       clickOutsideToClose: true
     }).then((res) => {
-      this.Picture.download({ name: res.picName, url: res.picURL }, (data) => {
+      if (res.command === 'local') {
         if (res.insertFlag) {
-          this.onInsertPicture({id: data.id});
+          this.onInsertPicture({ id: res.id });
         }
-      }, (error) => {
-        console.log(error.message);
-      });
+      } else {
+        this.Picture.download({ name: res.picName, url: res.picURL }, (data) => {
+          if (res.insertFlag) {
+            this.onInsertPicture({ id: data.id });
+          }
+        }, (error) => {
+          console.log(error.message);
+        });
+      }
     }, () => {
       console.log('Canceled upload');
     });
