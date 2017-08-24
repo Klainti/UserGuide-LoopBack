@@ -2,9 +2,9 @@
 
 const UserGuideApp = angular.module('UserGuideApp', ['ui.router', 'ngMaterial', 'ngResource', 'ngSanitize', 'ngMessages', 'ngFileUpload', 'lbServices']);
 
-UserGuideApp.constant('ngConfig' ,{
-  'prefix': 'guide',
-  'initID': '599a9f78258fa830f747f5c3'
+UserGuideApp.constant('ngConfig', {
+  prefix: 'guide',
+  initID: '599a9f78258fa830f747f5c3'
 });
 
 UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngConfig) => {
@@ -37,7 +37,7 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngCo
               return $q.resolve({ data: '', id: $stateParams.id, name: '', path: '' });
             }
             return Markdown.findById({ id: $stateParams.id }).$promise;
-          },
+          }
         }
       });
 });
