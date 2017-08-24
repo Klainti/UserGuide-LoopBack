@@ -11,8 +11,8 @@ module.exports = (Picture) => {
           const buffer = Buffer.from(data, 'binary');
           return Picture.create({ data: buffer, name }); // save it to db!
         })
-        .then(() => {
-          resolve();
+        .then((modelInstance) => {
+          resolve(modelInstance.id);
         })
         .catch((error) => {
           reject(error);
@@ -24,22 +24,21 @@ module.exports = (Picture) => {
   Picture.remoteMethod('download', {
     accepts: [{ arg: 'url', type: 'string' },
               { arg: 'name', type: 'string' }],
+    returns: { arg: 'id', type: 'string' },
     description: 'Download image from given url',
     http: { path: '/download', verb: 'post' }
   });
   /* Convert base64 image to binary! */
   Picture.beforeRemote('create', (ctx, modelInstance, next) => {
     const base64 = ctx.req.body.data.substring(ctx.req.body.data.indexOf(','));
-    const type = ctx.req.body.data.substring(ctx.req.body.data.indexOf(':') + 1, ctx.req.body.data.indexOf(';'));
     const data = Buffer.from(base64, 'base64').toString('binary');
     ctx.req.body.data = Buffer.from(data, 'binary');
-    ctx.req.body.type = type;
     next();
   });
 
   /* Add content type to an image (png/image)! */
   Picture.afterRemote('findById', (ctx, modelInstance) => {
-    ctx.res.setHeader('content-type', modelInstance.type);
+    ctx.res.setHeader('content-type', 'image/*');
     ctx.res.end(modelInstance.data);
   });
 };
