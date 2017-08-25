@@ -7,9 +7,13 @@ class GuideController {
   }
   $onInit() {
     this.pageHtml = this.pageData;
-    this.Markdown.findById({ id: this.$stateParams.id }, (res) => {
-      this.onNewMarkdown({ command: '', path: res.path, newFileID: '' });
-    });
+    if (this.$stateParams.id === '0') {
+      this.updatePath({ command: '', path: '/', newFileID: '' });
+    } else {
+      this.Markdown.findById({ id: this.$stateParams.id }, (res) => {
+        this.updatePath({ command: '', path: res.path, newFileID: '' });
+      });
+    }
   }
 }
 
@@ -19,7 +23,7 @@ angular.module('UserGuideApp')
       templateUrl: 'components/page/guide/guide.view.html',
       bindings: {
         pageData: '<', // resolved data
-        onNewMarkdown: '&'
+        updatePath: '&'
       }
     });
 

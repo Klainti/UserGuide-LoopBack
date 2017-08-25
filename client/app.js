@@ -34,7 +34,7 @@ UserGuideApp.config(($stateProvider, $urlRouterProvider, $locationProvider, ngCo
         resolve: {
           markdownDetails: ($q, $stateParams, Markdown) => {
             if ($stateParams.id === '0') {
-              return $q.resolve({ data: '', id: $stateParams.id, name: '', path: '' });
+              return $q.resolve();
             }
             return Markdown.findById({ id: $stateParams.id }).$promise;
           }

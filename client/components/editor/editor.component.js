@@ -1,18 +1,24 @@
 'use strict';
 
 class EditorController {
-  constructor($state, $mdDialog, $q, Markdown, ngConfig) {
+  constructor($state, $stateParams, $mdDialog, $q, Markdown, ngConfig) {
     this.$state = $state;
+    this.$stateParams = $stateParams;
     this.$mdDialog = $mdDialog;
     this.$q = $q;
     this.Markdown = Markdown;
     this.ngConfig = ngConfig;
   }
   $onInit() {
-    this.markdown = this.markdownDetails.data;
-    this.id = this.markdownDetails.id;
-    this.name = this.markdownDetails.name;
-    this.path = this.markdownDetails.path;
+    if (this.$stateParams.id === '0') {
+      this.updatePath({ command: '', path: '/', newFileID: '' });
+    } else {
+      this.updatePath({ command: '', path: this.markdownDetails.path, newFileID: '' });
+      this.markdown = this.markdownDetails.data;
+      this.id = this.markdownDetails.id;
+      this.name = this.markdownDetails.name;
+      this.path = this.markdownDetails.path;
+    }
   }
   goBackBtn() {
     this.$state.go(this.ngConfig.prefix, { id: this.ngConfig.initID });
@@ -88,10 +94,11 @@ class EditorController {
 
 angular.module('UserGuideApp')
   .component('editorComponent', {
-    controller: ['$state', '$mdDialog', '$q', 'Markdown', 'ngConfig', EditorController],
+    controller: ['$state', '$stateParams', '$mdDialog', '$q', 'Markdown', 'ngConfig', EditorController],
     templateUrl: 'components/editor/editor.view.html',
     bindings: {
       markdownDetails: '<', // resolved data
+      updatePath: '&',
       onEditorSave: '&'
     }
   });

@@ -14,7 +14,7 @@
         <catalog-component file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.isAdmin"></catalog-component>
     </div>
     <div flex="70">
-        <ui-view on-new-markdown="$ctrl.updateCatalog(command, path, newFileID)" on-editor-save="$ctrl.updateCatalog(command, path, newFileID)"></ui-view>
+        <ui-view on-editor-save="$ctrl.updateCatalog(command, path, newFileID)" update-path="$ctrl.updateCatalog(command, path, newFileID)"></ui-view>
     </div>
 </div>
 
