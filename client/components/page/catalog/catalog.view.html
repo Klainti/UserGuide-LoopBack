@@ -5,7 +5,11 @@
               <form ng-submit="$ctrl.pathSubmit()" name="pathForm">
                 <md-input-container>
                   <label>Path</label>
-                  <input ng-model="$ctrl.catalogPath">
+                  <md-select ng-model="$ctrl.catalogPath" name="catalogPath" md-on-close="$ctrl.onCloseSelection()" ng-required="true">
+                    <md-option ng-value="folder.item.path" ng-repeat="folder in $ctrl.folders">
+                      {{folder.item.path}}
+                    </md-option>
+                  </md-select>
                 </md-input-container>
               </form>
             </ul>

@@ -7,6 +7,23 @@ class CatalogController {
     this.Folder = Folder;
     this.Markdown = Markdown;
   }
+  $onInit() {
+    this.Folder.find((folders) => {
+      this.folders = folders.map((folder) => {
+        if (folder.path === '/') {
+          return { item: { path: `${folder.path}${folder.name}`, id: folder.id } };
+        }
+        return { item: { path: `${folder.path}/${folder.name}`, id: folder.id } };
+      });
+      this.folders.unshift({ item: { path: '/', id: '0' } }); // we do not save / as a folder in db
+    });
+  }
+  onCloseSelection() {
+    console.log(this.catalogPath);
+    this.Folder.getContent({ path: this.catalogPath }, (res) => {
+      this.catalogList = res.list;
+    });
+  }
   pathSubmit() {
     this.Folder.getContent({ path: this.catalogPath }, (res) => {
       this.catalogList = res.list;
@@ -22,8 +39,8 @@ class CatalogController {
       this.Markdown.deleteById({ id }, (res) => {
         console.log(`Deleted MD with id ${id}`);
         this.catalogPath = res.path;
-        this.Folder.getContent({ path: res.path }, (res) => {
-          this.catalogList = res.list;
+        this.Folder.getContent({ path: res.path }, (folder) => {
+          this.catalogList = folder.list;
         });
       });
     }, () => {
@@ -47,27 +64,25 @@ class CatalogController {
   }
   setItemColor(id) {
     if (this.newFileId === id && this.fileCommand === 'save') {
-      return { 'color': 'green' };
+      return { color: 'green' };
     } else if (this.newFileId === id && this.fileCommand === 'update') {
-      return { 'color': 'orange' };
+      return { color: 'orange' };
     }
-    return { 'color': 'blue' };
+    return { color: 'blue' };
   }
   static pathSlice(path) {
     const res = path.split('/');
     if (res.length <= 2) {
       return '/';
-    } else {
-      return path.slice(0, path.lastIndexOf('/'));
     }
+    return path.slice(0, path.lastIndexOf('/'));
   }
   static pathAppend(path, folderName) {
     const res = path.split('/');
     if (res.length === 2 && path.length === 1) {
       return `/${folderName}`;
-    } else {
-      return `${path}/${folderName}`;
     }
+    return `${path}/${folderName}`;
   }
 }
 
