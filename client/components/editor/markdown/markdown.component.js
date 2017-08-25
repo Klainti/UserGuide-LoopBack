@@ -13,9 +13,15 @@ class MarkdownController {
     this.onPreview();
   }
   insertPicture(id) {
+    if (this.markdown === undefined) {
+      this.markdown = '';
+    }
     this.markdown = MarkdownController.insertPictureToEditor(id, this.markdown);
   }
   addLink(link) {
+    if (this.markdown === undefined) {
+      this.markdown = '';
+    }
     this.markdown = MarkdownController.addLinkToEditor(link, this.markdown);
   }
   static insertPictureToEditor(id, markdown) {
