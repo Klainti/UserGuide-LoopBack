@@ -36,11 +36,15 @@
                 </div>
                 <span flex></span>
                 <div>
-                    <a ng-switch-when="true" ui-sref="editor({ id: catalogItem.id })">
-                        <md-button class="md-raised md-primary">Edit</md-button>
+                    <a ng-switch-when="true">
+                        <md-button ng-click="$ctrl.editBtn(catalogItem.id)" class="md-fab md-mini md-primary md-hue-1">
+                          <md-icon md-font-icon="classname">mode_edit</md-icon>
+                        </md-button>
                     </a>
                     <a ng-switch-when="true">
-                        <md-button class="md-raised md-primary" ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.name)">Delete</md-button>
+                      <md-button ng-click="$ctrl.deleteBtn(catalogItem.id, catalogItem.name)" class="md-fab md-mini md-primary md-hue-1">
+                        <md-icon md-font-icon="classname">delete</md-icon>
+                      </md-button>
                     </a>
                 </div>
             </div>

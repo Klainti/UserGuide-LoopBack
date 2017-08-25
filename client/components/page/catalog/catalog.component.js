@@ -1,8 +1,9 @@
 'use strict';
 
 class CatalogController {
-  constructor($mdDialog, $stateParams, Folder, Markdown) {
+  constructor($mdDialog, $state, $stateParams, Folder, Markdown) {
     this.$mdDialog = $mdDialog;
+    this.$state = $state;
     this.$stateParams = $stateParams;
     this.Folder = Folder;
     this.Markdown = Markdown;
@@ -33,6 +34,9 @@ class CatalogController {
     this.Folder.getContent({ path: this.catalogPath }, (res) => {
       this.catalogList = res.list;
     });
+  }
+  editBtn(id) {
+    this.$state.go('editor', { id });
   }
   deleteBtn(id, name) {
     this.$mdDialog.show(
