@@ -10,7 +10,7 @@ class AppController {
     this.path = '/';
     this.Folder.getContent({ path: '/' }, (res) => {
       this.catalog = res.list;
-      this.$state.go(this.ngConfig.prefix, {id: this.ngConfig.initID });
+      this.$state.go(this.ngConfig.prefix, { id: this.ngConfig.initID });
     }, (error) => {
       console.log(error.message);
       this.catalog = undefined;
