@@ -11,12 +11,12 @@ class EditorController {
   }
   $onInit() {
     if (this.$stateParams.id === '0') {
-      this.updatePath({ command: '', path: '/', newFileID: '' });
+      this.updatePath({ path: '/' });
       this.id = this.$stateParams.id;
       this.name = '';
       this.path = '/';
     } else {
-      this.updatePath({ command: '', path: this.markdownDetails.path, newFileID: '' });
+      this.updatePath({ path: this.markdownDetails.path });
       this.markdown = this.markdownDetails.data;
       this.id = this.markdownDetails.id;
       this.name = this.markdownDetails.name;

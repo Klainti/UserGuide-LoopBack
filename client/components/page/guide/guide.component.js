@@ -8,10 +8,10 @@ class GuideController {
   $onInit() {
     this.pageHtml = this.pageData;
     if (this.$stateParams.id === '0') {
-      this.updatePath({ command: '', path: '/', newFileID: '' });
+      this.updatePath({ path: '/' });
     } else {
       this.Markdown.findById({ id: this.$stateParams.id }, (res) => {
-        this.updatePath({ command: '', path: res.path, newFileID: '' });
+        this.updatePath({ path: res.path });
       });
     }
   }

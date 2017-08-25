@@ -29,6 +29,12 @@ class AppController {
       this.folderFlag = !this.folderFlag;
     }
   }
+  updatePath(path) {
+    this.Folder.getContent({ path }, (res) => {
+      this.catalog = res.list;
+      this.path = path;
+    });
+  }
 }
 
 angular.module('UserGuideApp')
