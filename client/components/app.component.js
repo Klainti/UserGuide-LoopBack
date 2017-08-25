@@ -5,6 +5,7 @@ class AppController {
     this.ngConfig = ngConfig;
     this.$state = $state;
     this.Folder = Folder;
+    this.folderFlag = true; // Just a flag to trigger onChanges to catalogComponent, not using the real value
   }
   userGuideBtn() {
     this.path = '/';
@@ -24,6 +25,9 @@ class AppController {
       this.path = path;
       this.newItem = newFileID;
     });
+    if (command === 'save') {
+      this.folderFlag = !this.folderFlag;
+    }
   }
 }
 

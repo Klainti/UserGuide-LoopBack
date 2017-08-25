@@ -11,7 +11,7 @@
 </md-toolbar>
 <div layout="row" layout-margin>
     <div id="border" flex="30">
-        <catalog-component file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.isAdmin"></catalog-component>
+        <catalog-component folder-flag="$ctrl.folderFlag" file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.isAdmin"></catalog-component>
     </div>
     <div flex="70">
         <ui-view on-editor-save="$ctrl.updateCatalog(command, path, newFileID)" update-path="$ctrl.updateCatalog(command, path, newFileID)"></ui-view>

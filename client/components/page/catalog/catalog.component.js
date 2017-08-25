@@ -6,8 +6,14 @@ class CatalogController {
     this.$stateParams = $stateParams;
     this.Folder = Folder;
     this.Markdown = Markdown;
+    this.updateSelectItems();
   }
-  $onInit() {
+  $onChanges(changes) {
+    if (changes.folderFlag && !changes.folderFlag.isFirstChange()) {
+      this.updateSelectItems();
+    }
+  }
+  updateSelectItems() {
     this.Folder.find((folders) => {
       this.folders = folders.map((folder) => {
         if (folder.path === '/') {
@@ -19,7 +25,6 @@ class CatalogController {
     });
   }
   onCloseSelection() {
-    console.log(this.catalogPath);
     this.Folder.getContent({ path: this.catalogPath }, (res) => {
       this.catalogList = res.list;
     });
@@ -42,6 +47,7 @@ class CatalogController {
         this.Folder.getContent({ path: res.path }, (folder) => {
           this.catalogList = folder.list;
         });
+        this.updateSelectItems();
       });
     }, () => {
       console.log('Canceled delete');
@@ -91,6 +97,7 @@ angular.module('UserGuideApp')
       controller: CatalogController,
       templateUrl: 'components/page/catalog/catalog.view.html',
       bindings: {
+        folderFlag: '<',
         fileCommand: '<',
         catalogList: '<',
         catalogPath: '=',
