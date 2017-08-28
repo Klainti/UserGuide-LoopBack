@@ -1,7 +1,7 @@
 'use strict';
 
 const showdown = require('showdown');
-const config = require('../server/config.json');
+const config = require('../config.json');
 
 
 const converter = new showdown.Converter();
@@ -22,20 +22,20 @@ class Utils {
       }
       list.push({ id: buffer[i].id, name: buffer[i].name, type });
     }
-    return Promise.resolve(list);
+    return list;
   }
   /* Converts a markdown to html */
   convertToHtml(markdownText) {
-    return Promise.resolve(converter.makeHtml(markdownText));
+    return converter.makeHtml(markdownText);
   }
   /* Path Validation */
-  validPath(path) {
+  async validPath(path) {
     if (!PathValidation.test(path) && path !== '/') {
       const error = new Error('Invalid Path');
       error.status = 400;
-      return Promise.reject(error);
+      return error;
     }
-    return Promise.resolve();
+    return null;
   }
 }
 

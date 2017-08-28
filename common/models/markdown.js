@@ -3,7 +3,7 @@
 
 module.exports = (Markdown) => {
   /* Convert a markdown text to html! */
-  Markdown.preview = data => Markdown.app.utils.convertToHtml(data);
+  Markdown.preview = data => Promise.resolve(Markdown.app.utils.convertToHtml(data));
 
   Markdown.remoteMethod('preview', {
     accepts: { arg: 'data', type: 'string' },
@@ -18,14 +18,13 @@ module.exports = (Markdown) => {
       if (result === null) {
         const error = new Error('Not Found any markdown by this ID!');
         error.status = 404;
-        return Promise.reject(error);
+        return error;
       }
-      const convertedHtml = Markdown.app.utils.convertToHtml(result.data);
-      return (convertedHtml);
+      return Markdown.app.utils.convertToHtml(result.data);
     });
 
   Markdown.remoteMethod('getHtml', {
-    accepts: [{ arg: 'id', type: 'string' }],
+    accepts: { arg: 'id', type: 'string' },
     returns: { arg: 'html', type: 'string' },
     description: 'Get HTML by {id}',
     http: { path: '/:id/preview', verb: 'get' }
@@ -34,18 +33,18 @@ module.exports = (Markdown) => {
   /* Create folders */
   Markdown.beforeRemote('create', (ctx, modelInstance, next) => {
     Markdown.app.utils.validPath(ctx.req.body.path)
-      .then(() => {
+      .then((error) => {
+        if (error) throw error;
         if (ctx.req.body.path === '/') { // not need to take folders, is root!
-          return Promise.resolve();
+          return null;
         }
-        const folders = Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
-        return (folders);
+        return Markdown.app.FS.getFolderFromPath(ctx.req.body.path);
       })
       .then((folders) => {
         if (folders) {
           return Markdown.app.FS.saveFolder(folders);
         }
-        return Promise.resolve(); // no need to save folders, is root!
+        return null; // no need to save folders, is root!
       })
       .then(() => {
         next();
