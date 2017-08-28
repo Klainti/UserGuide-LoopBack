@@ -3,18 +3,7 @@
 
 module.exports = (Markdown) => {
   /* Convert a markdown text to html! */
-  Markdown.preview = (data) => {
-    const convertedHtml = new Promise((resolve, reject) => {
-      Markdown.app.utils.ConvertToHtml(data)
-        .then((html) => {
-          resolve(html);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-    return (convertedHtml);
-  };
+  Markdown.preview = data => Markdown.app.utils.convertToHtml(data);
 
   Markdown.remoteMethod('preview', {
     accepts: { arg: 'data', type: 'string' },
@@ -24,27 +13,16 @@ module.exports = (Markdown) => {
   });
 
   /* Search for a markdown and convert it to HTML */
-  Markdown.getHtml = (id) => {
-    const page = new Promise((resolve, reject) => {
-      Markdown.findOne({ where: { _id: id } })
-        .then((result) => {
-          if (result !== null) {
-            const convertedHtml = Markdown.app.utils.ConvertToHtml(result.data);
-            return (convertedHtml);
-          }
-          const error = new Error('Not Found any markdown by this ID!');
-          error.status = 404;
-          return Promise.reject(error);
-        })
-        .then((html) => {
-          resolve(html);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+  Markdown.getHtml = id => Markdown.findOne({ where: { _id: id } })
+    .then((result) => {
+      if (result === null) {
+        const error = new Error('Not Found any markdown by this ID!');
+        error.status = 404;
+        return Promise.reject(error);
+      }
+      const convertedHtml = Markdown.app.utils.convertToHtml(result.data);
+      return (convertedHtml);
     });
-    return (page);
-  };
 
   Markdown.remoteMethod('getHtml', {
     accepts: [{ arg: 'id', type: 'string' }],
@@ -55,7 +33,7 @@ module.exports = (Markdown) => {
 
   /* Create folders */
   Markdown.beforeRemote('create', (ctx, modelInstance, next) => {
-    Markdown.app.utils.ValidPath(ctx.req.body.path)
+    Markdown.app.utils.validPath(ctx.req.body.path)
       .then(() => {
         if (ctx.req.body.path === '/') { // not need to take folders, is root!
           return Promise.resolve();
@@ -81,11 +59,10 @@ module.exports = (Markdown) => {
   Markdown.afterRemote('findOne', (ctx, modelInstance, next) => {
     if (modelInstance) {
       ctx.result = { modelInstance };
-      next();
     } else {
       ctx.result = {};
-      next();
     }
+    next();
   });
 
   /* Get path from requested id */

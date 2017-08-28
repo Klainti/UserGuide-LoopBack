@@ -4,22 +4,9 @@ const request = require('request-promise');
 
 module.exports = (Picture) => {
   /* Download image from given url */
-  Picture.download = (url, name) => {
-    const image = new Promise((resolve, reject) => {
-      request(url, { encoding: 'binary' }) // download image
-        .then((data) => {
-          const buffer = Buffer.from(data, 'binary');
-          return Picture.create({ data: buffer, name }); // save it to db!
-        })
-        .then((modelInstance) => {
-          resolve(modelInstance.id);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-    return (image);
-  };
+  Picture.download = (url, name) => request(url, { encoding: 'binary' }) // download image
+      .then(data => Picture.create({ data: Buffer.from(data, 'binary'), name }))
+      .then(modelInstance => modelInstance.id);
 
   Picture.remoteMethod('download', {
     accepts: [{ arg: 'url', type: 'string' },
