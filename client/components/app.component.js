@@ -6,6 +6,7 @@ class AppController {
     this.$state = $state;
     this.Folder = Folder;
     this.folderFlag = true; // Just a flag to trigger onChanges to catalogComponent, not using the real value
+    this.adminFlag = false;
   }
   userGuideBtn() {
     this.path = '/';

@@ -1,8 +1,11 @@
-<md-toolbar ng-switch on="$ctrl.isAdmin" layout="row" class="md-toolbar-tools">
+<md-toolbar ng-switch on="$ctrl.adminFlag" layout="row" class="md-toolbar-tools">
     <a ng-click="$ctrl.userGuideBtn()">
         <h1>User Guide</h1>
     </a>
     <span flex></span>
+    <md-button ng-click="$ctrl.adminFlag = !$ctrl.adminFlag" class="md-raised">
+      Switch
+    </md-button>
     <a ng-switch-when="true" ui-sref="editor({ id: '0' })">
         <md-button class="md-raised" aria-label="Editor">
             Editor
@@ -11,7 +14,7 @@
 </md-toolbar>
 <div layout="row" layout-margin>
     <div id="border" flex="30">
-        <catalog-component folder-flag="$ctrl.folderFlag" file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.isAdmin"></catalog-component>
+        <catalog-component folder-flag="$ctrl.folderFlag" file-command="$ctrl.command" new-file-id="$ctrl.newItem" catalog-list="$ctrl.catalog" catalog-path="$ctrl.path" is-admin="$ctrl.adminFlag"></catalog-component>
     </div>
     <div flex="70">
         <ui-view on-editor-save="$ctrl.updateCatalog(command, path, newFileID)" update-path="$ctrl.updatePath(path)"></ui-view>
