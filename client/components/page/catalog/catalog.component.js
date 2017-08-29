@@ -30,11 +30,6 @@ class CatalogController {
       this.catalogList = res.list;
     });
   }
-  pathSubmit() {
-    this.Folder.getContent({ path: this.catalogPath }, (res) => {
-      this.catalogList = res.list;
-    });
-  }
   editBtn(id) {
     this.$state.go('editor', { id });
   }

@@ -2,16 +2,14 @@
     <md-list class="md-dense" flex>
         <div>
             <ul>
-              <form ng-submit="$ctrl.pathSubmit()" name="pathForm">
-                <md-input-container>
-                  <label>Path</label>
-                  <md-select ng-model="$ctrl.catalogPath" name="catalogPath" md-on-close="$ctrl.onCloseSelection()" ng-required="true">
-                    <md-option ng-value="folder.item.path" ng-repeat="folder in $ctrl.folders">
-                      {{folder.item.path}}
-                    </md-option>
-                  </md-select>
-                </md-input-container>
-              </form>
+              <md-input-container>
+                <label>Path</label>
+                <md-select ng-model="$ctrl.catalogPath" name="catalogPath" md-on-close="$ctrl.onCloseSelection()" ng-required="true">
+                  <md-option ng-value="folder.item.path" ng-repeat="folder in $ctrl.folders">
+                    {{folder.item.path}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
             </ul>
         </div>
         <md-list-item ng-repeat="catalogItem in $ctrl.catalogList">
