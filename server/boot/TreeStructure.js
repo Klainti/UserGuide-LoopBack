@@ -1,6 +1,6 @@
 'use strict';
 
-const MyTreeStructure = require('../../lib/MyTreeStructure');
+const MyTreeStructure = require('../lib/MyTreeStructure');
 
 module.exports = function enableTree(app) {
   // enable Tree Structure Lib

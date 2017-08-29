@@ -1,6 +1,6 @@
 'use strict';
 
-const Utils = require('../../lib/Utils');
+const Utils = require('../lib/Utils');
 
 module.exports = function enableTree(app) {
   // enable Tree Structure Lib
