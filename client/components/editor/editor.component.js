@@ -42,12 +42,12 @@ class EditorController {
     let saveInfo;
     if (name === oldName && path === oldPath) {
       // update markdown data only
-      this.Markdown.prototype$patchAttributes({ id }, { data: this.markdown }, () => {
-        this.onEditorSave({ command: 'update', path, newFileID: id });
+      this.Markdown.prototype$patchAttributes({id}, {data: this.markdown}, () => {
+        this.onEditorSave({command: 'update', path, newFileID: id});
       });
     } else {
       // check if there is already a markdown with the given name and path
-      this.Markdown.findOne({ filter: { where: { name, path } } }).$promise
+      this.Markdown.findOne({filter: {where: {name, path}}}).$promise
         .then((res) => {
           if (res.modelInstance !== undefined) {
             existedId = res.modelInstance.id;
@@ -64,12 +64,12 @@ class EditorController {
         .then((res) => {
           if (res === true) {
             // overwrite/update data to an existing markdown
-            saveInfo = { command: 'update', path, newFileID: existedId};
-            return this.Markdown.prototype$patchAttributes({ id: existedId }, { data: this.markdown, }).$promise;
+            saveInfo = {command: 'update', path, newFileID: existedId};
+            return this.Markdown.prototype$patchAttributes({id: existedId}, {data: this.markdown,}).$promise;
           } else if (res === undefined) {
             // create a new markdown and save data
-            saveInfo = { command: 'save', path };
-            return this.Markdown.create({ name, path, data: this.markdown }).$promise;
+            saveInfo = {command: 'save', path};
+            return this.Markdown.create({name, path, data: this.markdown}).$promise;
           }
         })
         .then((res) => {
@@ -77,19 +77,23 @@ class EditorController {
             saveInfo.newFileID = res.id;
           }
           if (id !== '0') { // we already created/moved the markdown to a new path (or created a new one on the same folder with another name), so delete the previous markdown
-            this.Markdown.deleteById({ id }, () => {
+            this.Markdown.deleteById({id}, () => {
               console.log(`Deleted MD with id ${id}`);
-              this.$state.go('editor', { id: res.id, name, path });
+              this.$state.go('editor', {id: res.id, name, path});
               this.onEditorSave(saveInfo);
             });
           } else {
-            this.$state.go('editor', { id, name, path });
+            this.$state.go('editor', {id, name, path});
             this.onEditorSave(saveInfo);
           }
         })
         .catch((error) => {
-          console.log('catch error');
-          console.log(error);
+          this.$mdDialog.show(
+            this.$mdDialog.alert()
+              .title('ERROR')
+              .textContent(`Markdown not saved. ${error.data.error.message}`)
+              .ok('OK')
+          );
         });
     }
   }

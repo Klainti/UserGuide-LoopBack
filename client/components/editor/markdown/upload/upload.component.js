@@ -67,7 +67,12 @@ class UploadController {
             this.onInsertPicture({ id: data.id });
           }
         }, (error) => {
-          console.log(error.message);
+          this.$mdDialog.show(
+            this.$mdDialog.alert()
+              .title('ERROR')
+              .textContent(`${error.data.error.message}`)
+              .ok('OK')
+          );
         });
       }
     }, () => {
